@@ -169,7 +169,7 @@ export const FormCoin = ({
                         <Card className="w-full border-none cursor-pointer">
                             <CardContent className="p-4">
                                 <div className="flex justify-between items-center">
-                                    <p className="text-emerald-400">You"ll send {amount} {selectedCoin?.name}</p>
+                                    <p className="text-emerald-400">You&quot;ll send {amount} {selectedCoin?.name}</p>
                                     <ChevronDown className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
                                 </div>
                             </CardContent>
