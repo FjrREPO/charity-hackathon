@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Providers from "../components/providers/Providers";
 import { Toaster } from "@/components/ui/sonner";
+import { headers } from "next/headers";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -25,6 +26,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookies = headers().get('cookie')
+
   return (
     <html lang="en">
       <body
@@ -35,7 +38,7 @@ export default function RootLayout({
             duration: 3000,
           }}
         />
-        <Providers>
+        <Providers cookies={cookies}>
           {children}
         </Providers>
       </body>
