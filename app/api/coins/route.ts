@@ -1,4 +1,3 @@
-// app/api/coins/route.ts
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 
@@ -20,17 +19,12 @@ export async function GET() {
         'Referrer-Policy': 'strict-origin-when-cross-origin',
     };
 
-    try {
-        const response = await axios.get(url, { headers });
+    const response = await axios.get(url, { headers });
 
-        if (response.status === 200) {
-            const data = response.data;
-            return NextResponse.json(data || { message: 'Item not found' });
-        } else {
-            return NextResponse.json({ error: `Error: ${response.status}` }, { status: response.status });
-        }
-    } catch (error) {
-        console.error(error);
-        return NextResponse.json({ error: 'Failed to fetch data' }, { status: 500 });
+    if (response.status === 200) {
+        const data = response.data;
+        return NextResponse.json(data || { message: 'Item not found' });
+    } else {
+        return NextResponse.json({ error: `Error: ${response.status}` }, { status: response.status });
     }
 }
