@@ -1,10 +1,11 @@
-import HomePage from "./_components/Homepage";
-import PriceCoin from "./_components/PriceCoin";
+import Navbar from "@/components/bar/Navbar";
+import Homepage from "./_components/Homepage";
 
 export default function Home() {
   return (
     <div>
-      <HomePage/>
+      <Navbar/>
+      <Homepage/>
     </div>
   );
 }
