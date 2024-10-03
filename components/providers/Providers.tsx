@@ -19,7 +19,7 @@ const metadata = {
     icons: ['https://assets.reown.com/reown-profile-pic.png']
 }
 
-const modal = createAppKit({
+createAppKit({
     adapters: [wagmiAdapter],
     projectId,
     networks: [mainnet, arbitrum, avalanche, base, optimism, polygon],
