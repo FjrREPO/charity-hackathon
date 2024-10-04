@@ -10,7 +10,6 @@ export const WavyBackground = ({
     containerClassName,
     colors,
     waveWidth,
-    backgroundFill,
     blur = 10,
     speed = "fast",
     waveOpacity = 0.5,
@@ -21,7 +20,6 @@ export const WavyBackground = ({
     containerClassName?: string;
     colors?: string[];
     waveWidth?: number;
-    backgroundFill?: string;
     blur?: number;
     speed?: "slow" | "fast";
     waveOpacity?: number;
@@ -67,8 +65,8 @@ export const WavyBackground = ({
 
         if (!canvas || !ctx) return;
 
-        let w = (ctx.canvas.width = window.innerWidth);
-        let h = (ctx.canvas.height = window.innerHeight);
+        const w = (ctx.canvas.width = window.innerWidth);
+        const h = (ctx.canvas.height = window.innerHeight);
         ctx.filter = `blur(${blur}px)`;
 
         let nt = 0;
@@ -113,7 +111,7 @@ export const WavyBackground = ({
                 cancelAnimationFrame(animationRef.current);
             }
         };
-    }, [theme]); // Re-render when theme changes
+    }, [theme]);
 
     return (
         <div

@@ -2,16 +2,16 @@
 
 import {
     useQuery
-} from '@tanstack/react-query'
+} from "@tanstack/react-query"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import SkeletonWrapper from '@/components/SkeletonWrapper'
-import { FormCoin } from './FormCoin'
-import coins from '@/data/coins/coins.json'
-import { Label } from '@/components/ui/label'
-import { motion, AnimatePresence } from 'framer-motion'
+import SkeletonWrapper from "@/components/SkeletonWrapper"
+import { FormCoin } from "./FormCoin"
+import coins from "@/data/coins/coins.json"
+import { Label } from "@/components/ui/label"
+import { motion, AnimatePresence } from "framer-motion"
 
 const fetchCryptoCurrency = async (): Promise<CryptoCurrency[]> => {
-    const response = await fetch('/api/coinmarketcap/currency')
+    const response = await fetch("/api/coinmarketcap/currency")
     if (!response.ok) {
         throw new Error(`Network response was not ok: ${response.status}`)
     }
@@ -53,10 +53,10 @@ const CoinList = ({ cryptos, isLoading, refetch }: { cryptos: CryptoCurrency[] |
                 transition={{ type: "spring", stiffness: 300 }}
             >
                 <Card>
-                    <CardHeader className='text-center'>
+                    <CardHeader className="text-center">
                         <motion.div variants={itemVariants}>
-                            <CardTitle className='text-xl font-bold'>
-                                <Label className='text-textSecondary text-xl font-bold'>Crypto</Label>{" "}Donation
+                            <CardTitle className="text-xl font-bold">
+                                <Label className="text-textSecondary text-xl font-bold">Crypto</Label>&nbsp;Donation
                             </CardTitle>
                         </motion.div>
                         <motion.div variants={itemVariants}>
@@ -78,7 +78,7 @@ const CoinList = ({ cryptos, isLoading, refetch }: { cryptos: CryptoCurrency[] |
 
 export default function Donation() {
     const { data: cryptos, isLoading, refetch } = useQuery({
-        queryKey: ['cryptos'],
+        queryKey: ["cryptos"],
         queryFn: fetchCryptoCurrency,
         refetchInterval: 10000
     })
