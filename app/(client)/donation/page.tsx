@@ -3,7 +3,7 @@ import Donation from './_components/Donation'
 
 export default function page() {
     return (
-        <div>
+        <div className='pt-[80px]'>
             <Donation/>
         </div>
     )

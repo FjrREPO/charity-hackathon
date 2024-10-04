@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Label } from "../ui/label";
 import Logo from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
@@ -20,6 +21,8 @@ export default function Navbar() {
 }
 
 function MobileNavbar() {
+  const pathname = usePathname();
+
   return (
     <div
       className="absolute z-40 h-fit w-full py-5 md:py-0"
@@ -27,13 +30,19 @@ function MobileNavbar() {
         backgroundColor: 'rgba(128, 128, 128, 0.1)',
       }}
     >
-      <div className="block md:hidden" >
+      <div className="block md:hidden">
         <nav className="container flex items-center justify-between px-5">
           <Logo />
           <div className="flex flex-row gap-x-4">
             {items.map((item, index) => (
               <Link key={index} href={item.link} className="cursor-pointer">
-                <Label className="font-semibold cursor-pointer">{item.label}</Label>
+                <Label 
+                  className={`font-semibold cursor-pointer ${
+                    pathname === item.link ? 'text-textSecondary underline underline-[5px] underline-offset-2 underline-textSecondary' : ''
+                  }`}
+                >
+                  {item.label}
+                </Label>
               </Link>
             ))}
           </div>
@@ -47,6 +56,8 @@ function MobileNavbar() {
 }
 
 function DesktopNavbar() {
+  const pathname = usePathname();
+
   return (
     <div
       className="absolute z-40 h-fit w-full"
@@ -54,13 +65,19 @@ function DesktopNavbar() {
         backgroundColor: 'rgba(128, 128, 128, 0.1)',
       }}
     >
-      <div className="hidden md:block" >
+      <div className="hidden md:block">
         <nav className="container flex items-center justify-between gap-x-4 p-5">
           <Logo />
           <div className="flex flex-row gap-x-4">
             {items.map((item, index) => (
               <Link key={index} href={item.link} className="cursor-pointer">
-                <Label className="font-semibold cursor-pointer">{item.label}</Label>
+                <Label 
+                  className={`font-semibold cursor-pointer text-md ${
+                    pathname === item.link ? 'text-textSecondary border-b-2 border-textSecondary border-dashed' : ''
+                  }`}
+                >
+                  {item.label}
+                </Label>
               </Link>
             ))}
           </div>
