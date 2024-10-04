@@ -4,6 +4,7 @@ import "./globals.css";
 import Providers from "../components/providers/Providers";
 import { Toaster } from "@/components/ui/sonner";
 import { headers } from "next/headers";
+import Navbar from "@/components/bar/Navbar";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -39,6 +40,7 @@ export default function RootLayout({
           }}
         />
         <Providers cookies={cookies}>
+          <Navbar />
           {children}
         </Providers>
       </body>
