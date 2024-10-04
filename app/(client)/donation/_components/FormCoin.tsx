@@ -220,38 +220,63 @@ export const FormCoin = ({
                                     transition={{ duration: 0.3 }}
                                     className="p-4 rounded-b-lg space-y-4 overflow-hidden"
                                 >
-                                    <div className="flex justify-between items-center">
+                                    <motion.div
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: "auto", opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        transition={{ duration: 0.35 }}
+                                        className="flex justify-between items-center">
                                         <Label>Rate</Label>
                                         <Label className="text-textSecondary font-bold text-md">1 {selectedCoin?.symbol} = {selectedCoinPrice ? selectedCoinPrice.toFixed(4) : "0"} USDT</Label>
-                                    </div>
-                                    <div className="flex justify-between items-center">
+                                    </motion.div>
+                                    <motion.div
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: "auto", opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        transition={{ duration: 0.4 }}
+                                        className="flex justify-between items-center">
                                         <div className="flex items-center gap-2">
                                             <Label>Estimated Network Fee</Label>
                                             <Info className="w-4 h-4 text-textSecondary" />
                                         </div>
                                         <Label className="text-textSecondary font-bold text-md">{estimatedNetworkFee} USDT</Label>
-                                    </div>
-                                    <div className="flex justify-between items-center">
+                                    </motion.div>
+                                    <motion.div
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: "auto", opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        transition={{ duration: 0.45 }}
+                                        className="flex justify-between items-center">
                                         <div className="flex items-center gap-2">
                                             <Label>Processing Fee</Label>
                                             <Info className="w-4 h-4 text-textSecondary" />
                                         </div>
                                         <Label className="text-textSecondary font-bold text-md">{processingFee} USDT</Label>
-                                    </div>
-                                    <div className="flex justify-between items-center">
+                                    </motion.div>
+                                    <motion.div
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: "auto", opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        transition={{ duration: 0.5 }}
+                                        className="flex justify-between items-center">
                                         <div className="flex items-center gap-2">
                                             <Label>Tax</Label>
                                             <Info className="w-4 h-4 text-textSecondary" />
                                         </div>
                                         <Label className="text-textSecondary font-bold text-md">{tax} USDT</Label>
-                                    </div>
-                                    <div className="flex justify-between items-center">
+                                    </motion.div>
+                                    <motion.div
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: "auto", opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        transition={{ duration: 0.55 }}
+                                        className="flex justify-between items-center">
                                         <div className="flex items-center gap-2">
                                             <Label>Total</Label>
                                             <Info className="w-4 h-4 text-textSecondary" />
                                         </div>
                                         <Label className="text-textSecondary font-bold text-md">{totalAmount.toFixed(4)} USDT</Label>
-                                    </div>
+                                    </motion.div>
                                 </motion.div>
                             </CollapsibleContent>
                         )}
@@ -260,7 +285,7 @@ export const FormCoin = ({
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.8 }}
+                    transition={{ duration: 0.6, delay: 0.8 }}
                 >
                     <Label className="text-center text-sm text-gray-400">Quote updates in {countdown}s</Label>
                 </motion.div>
