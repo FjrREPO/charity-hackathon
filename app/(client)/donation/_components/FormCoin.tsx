@@ -201,7 +201,7 @@ export const FormCoin = ({
                                     transition={{ duration: 0.3 }}
                                     className="flex justify-between items-center"
                                 >
-                                    <p className="text-textSecondary">You'll send {amount} {selectedCoin?.name}</p>
+                                    <p className="text-textSecondary">You&apos;ll send {amount} {selectedCoin?.name}</p>
                                     <ChevronDown />
                                 </motion.div>
                             </CardContent>
