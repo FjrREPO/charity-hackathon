@@ -11,7 +11,7 @@ export const CardDonation = ({
         <div className="w-full p-4">
             <div className="space-y-1">
                 <div className="flex flex-row flex-wrap gap-5 justify-center">
-                    {items.map((item: any) => (
+                    {items.map((item: Item) => (
                         <ItemCard
                             key={item.id}
                             id={item.id}

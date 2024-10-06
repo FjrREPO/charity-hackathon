@@ -6,7 +6,7 @@ import { Separator } from '@/components/ui/separator';
 import { useForm } from 'react-hook-form';
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription } from '@/components/ui/form';
 import { toast } from 'sonner';
-import { useAccount, useBalance, useWriteContract, useSimulateContract, useChainId } from 'wagmi';
+import { useAccount, useBalance, useWriteContract, useSimulateContract } from 'wagmi';
 import { parseUnits, formatUnits } from 'viem';
 
 const USDC_ABI = [
@@ -32,7 +32,6 @@ export const DialogDetailCard = ({ trigger, item }: DialogDetailCardProps) => {
     const [isLoading, setIsLoading] = useState(false);
     const [gasFee, setGasFee] = useState<bigint>(BigInt(0));
     const { address } = useAccount();
-    const chainId = useChainId();
     const recipientAddress = '0x979c193De8dFFc867611393fFd966861B6fB8836';
 
     const { data: balance } = useBalance({
