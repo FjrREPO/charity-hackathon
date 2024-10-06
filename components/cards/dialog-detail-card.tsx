@@ -1,13 +1,15 @@
-import { useState, useEffect } from 'react';
+"use client"
+
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
-import { useForm } from 'react-hook-form';
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription } from '@/components/ui/form';
+import { useAccount, useBalance, useWriteContract, useSimulateContract, useChainId } from 'wagmi';
+import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
+import { parseUnits } from 'viem';
+import { Label } from '@/components/ui/label';
+import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { useAccount, useBalance, useWriteContract, useSimulateContract } from 'wagmi';
-import { parseUnits, formatUnits } from 'viem';
+import { useState } from 'react';
 
 const USDC_ABI = [
     {
@@ -30,14 +32,10 @@ interface DialogDetailCardProps {
 
 export const DialogDetailCard = ({ trigger, item }: DialogDetailCardProps) => {
     const [isLoading, setIsLoading] = useState(false);
-    const [gasFee, setGasFee] = useState<bigint>(BigInt(0));
     const { address } = useAccount();
+    const { data: balance } = useBalance({ address, token: USDC_ADDRESS });
+    const chainId = useChainId();
     const recipientAddress = '0x979c193De8dFFc867611393fFd966861B6fB8836';
-
-    const { data: balance } = useBalance({
-        address,
-        token: USDC_ADDRESS,
-    });
 
     const form = useForm({
         defaultValues: {
@@ -45,20 +43,15 @@ export const DialogDetailCard = ({ trigger, item }: DialogDetailCardProps) => {
         },
     });
 
+    const { writeContract } = useWriteContract();
+
     const { data: simulateData } = useSimulateContract({
+        chainId: chainId,
         address: USDC_ADDRESS,
         abi: USDC_ABI,
         functionName: 'transfer',
-        args: [recipientAddress, parseUnits(item.price.toString(), 6).toString()],
+        args: [recipientAddress, parseUnits(item.price.toString(), 6).toString()]
     });
-
-    const { writeContract } = useWriteContract();
-
-    useEffect(() => {
-        if (simulateData?.request) {
-            setGasFee(BigInt(simulateData.request.gas || 0));
-        }
-    }, [simulateData]);
 
     const handleSubmit = async () => {
         try {
@@ -68,7 +61,7 @@ export const DialogDetailCard = ({ trigger, item }: DialogDetailCardProps) => {
             }
             await writeContract({
                 ...simulateData.request,
-                args: simulateData.request.args?.map(arg => 
+                args: simulateData.request.args?.map(arg =>
                     typeof arg === 'bigint' ? arg.toString() : arg
                 ),
             });
@@ -80,8 +73,6 @@ export const DialogDetailCard = ({ trigger, item }: DialogDetailCardProps) => {
             setIsLoading(false);
         }
     };
-
-    const isBalanceSufficient = balance && balance.value >= parseUnits(item.price.toString(), 6);
 
     return (
         <Dialog>
@@ -114,7 +105,7 @@ export const DialogDetailCard = ({ trigger, item }: DialogDetailCardProps) => {
                                 <div className="grid grid-cols-[60px_1fr] gap-2 items-center">
                                     <Label className="font-bold text-sm">Gas Fee</Label>
                                     <Label className="text-md font-bold text-right line-clamp-1">
-                                        {formatUnits(gasFee, 9)}&nbsp;Gwei
+                                        Fitur belum ada
                                     </Label>
                                 </div>
                                 <div className="grid grid-cols-[60px_1fr] gap-2 items-center">
@@ -149,7 +140,7 @@ export const DialogDetailCard = ({ trigger, item }: DialogDetailCardProps) => {
                             />
                             <Button
                                 type="submit"
-                                disabled={isLoading || !form.watch('confirmed') || !simulateData?.request || !isBalanceSufficient}
+                                disabled={isLoading || !form.watch('confirmed') || !simulateData?.request}
                             >
                                 {isLoading ? 'Processing...' : 'Buy Now'}
                             </Button>
