@@ -9,6 +9,7 @@ import { ThemeToggle } from "./ThemeToggle";
 const items = [
   { label: "Home", link: "/" },
   { label: "Donation", link: "/donation" },
+  { label: "Proof", link: "/proof" },
 ];
 
 export default function Navbar() {
