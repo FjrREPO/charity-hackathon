@@ -31,14 +31,14 @@ function MobileNavbar() {
       }}
     >
       <div className="block md:hidden">
-        <nav className="container flex items-center justify-between px-5">
+        <nav className="flex items-center justify-between px-5">
           <Logo />
           <div className="flex flex-row gap-x-4">
             {items.map((item, index) => (
               <Link key={index} href={item.link} className="cursor-pointer">
                 <Label 
                   className={`font-semibold cursor-pointer ${
-                    pathname === item.link ? 'text-textSecondary underline underline-[5px] underline-offset-2 underline-textSecondary' : ''
+                    pathname === item.link ? 'text-textSecondary border-b-2 border-textSecondary border-dashed' : ''
                   }`}
                 >
                   {item.label}
@@ -66,7 +66,7 @@ function DesktopNavbar() {
       }}
     >
       <div className="hidden md:block">
-        <nav className="container flex items-center justify-between gap-x-4 p-5">
+        <nav className="flex items-center justify-between gap-x-4 p-5">
           <Logo />
           <div className="flex flex-row gap-x-4">
             {items.map((item, index) => (
