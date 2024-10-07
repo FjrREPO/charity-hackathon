@@ -1,10 +1,17 @@
 "use client"
 
-import { CardDonation } from "./CardDonation"
 import coins from "@/data/coins/coins.json"
 import { Label } from "@/components/ui/label"
 import { AnimatePresence, motion } from "framer-motion"
 import ConnectButton from "@/components/wallet/connect-button"
+import items from "@/data/items/items.json";
+import { CardDonation } from "./CardDonation"
+
+const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: 20 }
+};
 
 export const Donation = () => {
     return (
@@ -25,7 +32,32 @@ export const Donation = () => {
                     <ConnectButton />
                 </motion.div>
                 <AnimatePresence mode="wait">
-                    <CardDonation coins={coins} />
+                    <div className="w-full p-4">
+                        <div className="space-y-1">
+                            <div className="flex flex-row flex-wrap gap-5 justify-center">
+                                {items.map((item: Item) => (
+                                    <motion.div
+                                        key={item.id}
+                                        variants={cardVariants}
+                                        initial="hidden"
+                                        animate="visible"
+                                        exit="exit"
+                                        transition={{ duration: 0.3 }}
+                                    >
+                                        <CardDonation
+                                            id={item.id}
+                                            name={item.name}
+                                            link={item.link}
+                                            image={item.image}
+                                            price={item.price}
+                                            source={item.source}
+                                            coins={coins}
+                                        />
+                                    </motion.div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
                 </AnimatePresence>
             </div>
         </div>
