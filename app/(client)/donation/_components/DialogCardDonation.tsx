@@ -28,10 +28,11 @@ import { parseUnits } from 'viem';
 import { Label } from '@/components/ui/label';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { USDC_ABI, USDC_ADDRESS } from '@/lib/abi/config';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, delay } from 'framer-motion';
 import Image from 'next/image';
+import { DialogDescription } from '@radix-ui/react-dialog';
 
 interface DialogCardDonationProps {
     trigger: React.ReactNode;
@@ -44,20 +45,8 @@ const dialogVariants = {
     exit: { opacity: 0, y: 20 }
 };
 
-const spinnerVariants = {
-    animate: {
-        rotate: [0, 360],
-        transition: {
-            repeat: Infinity,
-            duration: 1,
-            ease: 'linear'
-        }
-    }
-};
-
 export const DialogCardDonation = ({ trigger, item }: DialogCardDonationProps) => {
     const [isLoading, setIsLoading] = useState(false);
-    const [isEnabled, setIsEnabled] = useState(false);
     const { address } = useAccount();
     const { data: balance } = useBalance({ address, token: USDC_ADDRESS });
     const chainId = useChainId();
@@ -69,41 +58,31 @@ export const DialogCardDonation = ({ trigger, item }: DialogCardDonationProps) =
         },
     });
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsEnabled(true);
-        }, 1000);
-
-        return () => {
-            clearTimeout(timer);
-            setIsEnabled(false);
-        };
-    }, [item.price, chainId, recipientAddress]);
-
     const { writeContract } = useWriteContract();
 
-    const { data: simulateData } = useSimulateContract({
+    const { data: simulateData, isLoading: isLoadingSimulate, refetch, isFetching } = useSimulateContract({
         chainId: chainId,
         address: USDC_ADDRESS,
         abi: USDC_ABI,
         functionName: 'transfer',
         args: [recipientAddress, parseUnits(item.price.toString(), 6).toString()],
         query: {
-            enabled: isEnabled,
-            retry: false
+            enabled: false,
         }
     });
 
     const handleSubmit = async () => {
-        try {
-            setIsLoading(true);
+        setIsLoading(true);
+        refetch()
 
-            const txResult = await writeContract({
-                ...simulateData!.request,
-                args: simulateData!.request.args?.map(arg =>
-                    typeof arg === 'bigint' ? arg.toString() : arg
-                ),
-            });
+        if (!simulateData || !simulateData.request) {
+            toast.error('Failed to simulate transaction. Please try again.');
+            setIsLoading(false);
+            return;
+        }
+
+        try {
+            const txResult = await writeContract(simulateData.request);
 
             if (txResult !== undefined) {
                 toast.success(`Transaction successful! Hash: ${txResult}. Redirecting to signer...`);
@@ -112,16 +91,19 @@ export const DialogCardDonation = ({ trigger, item }: DialogCardDonationProps) =
             }
         } catch (error) {
             console.error('Error submitting transaction:', error);
-            toast.error('Failed to buy item. Please try again later.');
+            toast.error('Failed to buy item. Please try again.');
         } finally {
             setIsLoading(false);
         }
     };
 
+    const insufficientBalance = balance && parseFloat(balance.formatted) < item.price;
+
+
     return (
         <Dialog>
             <DialogTrigger asChild>{trigger}</DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
+            <DialogContent className="sm:max-w-[425px] max-w-[90vw]">
                 <AnimatePresence>
                     <motion.div
                         initial="hidden"
@@ -131,12 +113,12 @@ export const DialogCardDonation = ({ trigger, item }: DialogCardDonationProps) =
                         transition={{ duration: 0.3 }}
                     >
                         <DialogHeader>
-                            <DialogTitle className="text-xl font-bold text-center">Detail</DialogTitle>
+                            <DialogTitle className="text-xl font-bold text-center pb-5">Detail</DialogTitle>
                         </DialogHeader>
                         <Form {...form}>
                             <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-                                <div className="flex flex-col w-full gap-5">
-                                    <div className="w-full h-auto relative flex justify-center">
+                                <div className="flex flex-col w-full gap-3">
+                                    <div className="w-full h-auto relative flex flex-col justify-center">
                                         <Image
                                             src={item.image || "/api/placeholder/200/200"}
                                             alt={item.name || "Item image"}
@@ -144,6 +126,9 @@ export const DialogCardDonation = ({ trigger, item }: DialogCardDonationProps) =
                                             height={200}
                                             width={200}
                                         />
+                                        <DialogDescription className='text-sm relative text-right pt-1 text-gray-500'>
+                                            Source: {item.source}
+                                        </DialogDescription>
                                     </div>
                                     <div className="flex flex-col gap-2">
                                         <div className="grid grid-cols-[90px_1fr] gap-2 items-center">
@@ -174,11 +159,11 @@ export const DialogCardDonation = ({ trigger, item }: DialogCardDonationProps) =
                                                         type="checkbox"
                                                         checked={field.value}
                                                         onChange={field.onChange}
-                                                        className="accent-primary"
+                                                        className="accent-primary cursor-pointer"
                                                     />
                                                 </FormControl>
                                                 <div className="space-y-1 leading-none">
-                                                    <FormLabel>Confirm purchase</FormLabel>
+                                                    <FormLabel className='cursor-pointer'>Confirm purchase</FormLabel>
                                                     <FormDescription>
                                                         I understand this action cannot be undone
                                                     </FormDescription>
@@ -188,16 +173,18 @@ export const DialogCardDonation = ({ trigger, item }: DialogCardDonationProps) =
                                     />
                                     <Button
                                         type="submit"
-                                        disabled={isLoading || !form.watch('confirmed')}
+                                        disabled={isLoading || !form.watch('confirmed') || isLoadingSimulate || insufficientBalance || isFetching}
                                     >
                                         {isLoading ? (
-                                            <motion.div
-                                                className="w-5 h-5 border-2 border-t-2 border-transparent border-t-white rounded-full"
-                                                variants={spinnerVariants}
-                                                animate="animate"
-                                            />
+                                            <svg aria-hidden="true" role="status" className="inline w-4 h-4 me-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="#808080" />
+                                                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="#1C64F2" />
+                                            </svg>
                                         ) : 'Buy Now'}
                                     </Button>
+                                    {insufficientBalance && (
+                                        <Label className="text-red-500 text-sm font-medium">Insufficient balance to complete this purchase.</Label>
+                                    )}
                                 </div>
                             </form>
                         </Form>
