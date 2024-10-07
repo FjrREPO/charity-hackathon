@@ -67,23 +67,19 @@ export const DialogCardDonation: React.FC<DialogCardDonationProps> = ({ trigger,
 
         setIsLoading(true);
 
-        try {
-            const tx = await writeContract({
-                chainId: chainId,
-                abi: USDC_ABI,
-                functionName: 'transfer',
-                args: [toAddress, parseUnits(item.price.toString(), 6).toString()],
-                address: USDC_ADDRESS,
-            });
+        const tx = await writeContract({
+            chainId: chainId,
+            abi: USDC_ABI,
+            functionName: 'transfer',
+            args: [toAddress, parseUnits(item.price.toString(), 6).toString()],
+            address: USDC_ADDRESS,
+        });
 
-            if (tx !== undefined) {
-                toast.success('Transaction successful!');
-            } else {
-                toast.error('Transaction failed!');
-            }
-        } catch (error: any) {
-            toast.error('An error occurred during the transaction: ' + error.message);
-        } finally {
+        if (tx !== undefined) {
+            toast.success('Transaction successful!');
+            setIsLoading(false);
+        } else {
+            toast.error('Transaction failed!');
             setIsLoading(false);
         }
     };
