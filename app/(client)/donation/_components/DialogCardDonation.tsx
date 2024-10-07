@@ -1,11 +1,13 @@
 "use client";
 
+import React, { useState } from 'react';
 import {
     Dialog,
     DialogContent,
     DialogHeader,
     DialogTitle,
-    DialogTrigger
+    DialogTrigger,
+    DialogDescription
 } from '@/components/ui/dialog';
 import {
     Form,
@@ -18,21 +20,18 @@ import {
 import {
     useAccount,
     useBalance,
+    useChainId,
     useWriteContract,
-    useSimulateContract,
-    useChainId
 } from 'wagmi';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
-import { parseUnits } from 'viem';
 import { Label } from '@/components/ui/label';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { useCallback, useEffect, useState } from 'react';
 import { USDC_ABI, USDC_ADDRESS } from '@/lib/abi/config';
-import { motion, AnimatePresence, delay } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { DialogDescription } from '@radix-ui/react-dialog';
+import { parseUnits } from 'viem';
 
 interface DialogCardDonationProps {
     trigger: React.ReactNode;
@@ -45,12 +44,13 @@ const dialogVariants = {
     exit: { opacity: 0, y: 20 }
 };
 
-export const DialogCardDonation = ({ trigger, item }: DialogCardDonationProps) => {
+export const DialogCardDonation: React.FC<DialogCardDonationProps> = ({ trigger, item }) => {
     const [isLoading, setIsLoading] = useState(false);
     const { address } = useAccount();
-    const { data: balance } = useBalance({ address, token: USDC_ADDRESS });
     const chainId = useChainId();
-    const recipientAddress = '0x979c193De8dFFc867611393fFd966861B6fB8836';
+    const { data: balance } = useBalance({ address, token: USDC_ADDRESS });
+
+    const toAddress = "0x3B4f0135465d444a5bD06Ab90fC59B73916C85F5";
 
     const form = useForm({
         defaultValues: {
@@ -60,45 +60,33 @@ export const DialogCardDonation = ({ trigger, item }: DialogCardDonationProps) =
 
     const { writeContract } = useWriteContract();
 
-    const { data: simulateData, isLoading: isLoadingSimulate, refetch, isFetching } = useSimulateContract({
-        chainId: chainId,
-        address: USDC_ADDRESS,
-        abi: USDC_ABI,
-        functionName: 'transfer',
-        args: [recipientAddress, parseUnits(item.price.toString(), 6).toString()],
-        query: {
-            enabled: false,
-        }
-    });
+    const insufficientBalance = balance && parseFloat(balance.formatted) < item.price;
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (data: { confirmed: boolean }) => {
+        if (!data.confirmed || insufficientBalance) return;
+
         setIsLoading(true);
-        refetch()
-
-        if (!simulateData || !simulateData.request) {
-            toast.error('Failed to simulate transaction. Please try again.');
-            setIsLoading(false);
-            return;
-        }
 
         try {
-            const txResult = await writeContract(simulateData.request);
+            const tx = await writeContract({
+                chainId: chainId,
+                abi: USDC_ABI,
+                functionName: 'transfer',
+                args: [toAddress, parseUnits(item.price.toString(), 6).toString()],
+                address: USDC_ADDRESS,
+            });
 
-            if (txResult !== undefined) {
-                toast.success(`Transaction successful! Hash: ${txResult}. Redirecting to signer...`);
+            if (tx !== undefined) {
+                toast.success('Transaction successful!');
             } else {
-                toast.error('Failed to buy item. Please try again later.');
+                toast.error('Transaction failed!');
             }
-        } catch (error) {
-            console.error('Error submitting transaction:', error);
-            toast.error('Failed to buy item. Please try again.');
+        } catch (error: any) {
+            toast.error('An error occurred during the transaction: ' + error.message);
         } finally {
             setIsLoading(false);
         }
     };
-
-    const insufficientBalance = balance && parseFloat(balance.formatted) < item.price;
-
 
     return (
         <Dialog>
@@ -173,7 +161,7 @@ export const DialogCardDonation = ({ trigger, item }: DialogCardDonationProps) =
                                     />
                                     <Button
                                         type="submit"
-                                        disabled={isLoading || !form.watch('confirmed') || isLoadingSimulate || insufficientBalance || isFetching}
+                                        disabled={isLoading || !form.watch('confirmed') || insufficientBalance}
                                     >
                                         {isLoading ? (
                                             <svg aria-hidden="true" role="status" className="inline w-4 h-4 me-3 text-white animate-spin" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">

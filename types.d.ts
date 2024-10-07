@@ -27,3 +27,11 @@ interface Item {
     source: string;
     coins?: CoinItem;
 }
+
+interface TransactionAlchemy {
+    contractAddresses: string;
+    category: string[];
+    fromAddress: string;
+    toAddress: string;
+    excludeZeroValue: boolean;
+}
