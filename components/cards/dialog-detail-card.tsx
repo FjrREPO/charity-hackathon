@@ -10,20 +10,7 @@ import { Label } from '@/components/ui/label';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { useState } from 'react';
-
-const USDC_ABI = [
-    {
-        inputs: [
-            { name: "to", type: "address" },
-            { name: "value", type: "uint256" }
-        ],
-        name: "transfer",
-        outputs: [{ name: "", type: "bool" }],
-        type: "function"
-    }
-] as const;
-
-const USDC_ADDRESS = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
+import { USDC_ABI, USDC_ADDRESS } from '@/lib/abi/config';
 
 interface DialogDetailCardProps {
     trigger: React.ReactNode;
@@ -65,7 +52,7 @@ export const DialogDetailCard = ({ trigger, item }: DialogDetailCardProps) => {
                     typeof arg === 'bigint' ? arg.toString() : arg
                 ),
             });
-            toast.success(`Successfully bought item`);
+            toast.success(`Redirecting to signer sender...`);
         } catch (error) {
             console.error('Error submitting transaction:', error);
             toast.error('Failed to buy item');
@@ -92,24 +79,18 @@ export const DialogDetailCard = ({ trigger, item }: DialogDetailCardProps) => {
                                 />
                             </div>
                             <div className="flex flex-col gap-2">
-                                <div className="grid grid-cols-[80px_1fr] gap-2 items-center">
+                                <div className="grid grid-cols-[90px_1fr] gap-2 items-center">
                                     <Label className="font-bold text-sm">Item Name</Label>
                                     <Label className="text-md font-bold text-right line-clamp-1">{item.name}</Label>
                                 </div>
-                                <div className="grid grid-cols-[60px_1fr] gap-2 items-center">
+                                <div className="grid grid-cols-[90px_1fr] gap-2 items-center">
                                     <Label className="font-bold text-sm">Price</Label>
                                     <Label className="text-md font-bold text-right line-clamp-1">
                                         {item.price}&nbsp;USDC
                                     </Label>
                                 </div>
-                                <div className="grid grid-cols-[60px_1fr] gap-2 items-center">
-                                    <Label className="font-bold text-sm">Gas Fee</Label>
-                                    <Label className="text-md font-bold text-right line-clamp-1">
-                                        Fitur belum ada
-                                    </Label>
-                                </div>
-                                <div className="grid grid-cols-[60px_1fr] gap-2 items-center">
-                                    <Label className="font-bold text-sm">Balance</Label>
+                                <div className="grid grid-cols-[90px_1fr] gap-2 items-center">
+                                    <Label className="font-bold text-sm">Your Balance</Label>
                                     <Label className="text-md font-bold text-right line-clamp-1">
                                         {balance?.formatted || '0'}&nbsp;USDC
                                     </Label>
