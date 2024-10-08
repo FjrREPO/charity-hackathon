@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import coins from "@/data/coins/coins.json"
-import { Label } from "@/components/ui/label"
-import { AnimatePresence, motion } from "framer-motion"
-import ConnectButton from "@/components/wallet/connect-button"
+import coins from "@/data/coins/coins.json";
+import { Label } from "@/components/ui/label";
+import { AnimatePresence, motion } from "framer-motion";
+import ConnectButton from "@/components/wallet/connect-button";
 import items from "@/data/items/items.json";
-import { CardDonation } from "./CardDonation"
+import { CardDonation } from "./CardDonation";
 
 const cardVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -35,14 +35,17 @@ export const Donation = () => {
                     <div className="w-full p-4">
                         <div className="space-y-1">
                             <div className="flex flex-row flex-wrap gap-5 justify-center">
-                                {items.map((item: Item) => (
+                                {items.map((item: Item, index: number) => (
                                     <motion.div
                                         key={item.id}
                                         variants={cardVariants}
                                         initial="hidden"
                                         animate="visible"
                                         exit="exit"
-                                        transition={{ duration: 0.3 }}
+                                        transition={{
+                                            duration: 0.5,
+                                            delay: index * 0.25 
+                                        }}
                                     >
                                         <CardDonation
                                             id={item.id}
@@ -61,5 +64,5 @@ export const Donation = () => {
                 </AnimatePresence>
             </div>
         </div>
-    )
-}
+    );
+};

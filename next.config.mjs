@@ -31,6 +31,12 @@ const nextConfig = {
                 hostname: 'cdn.normi.es',
                 port: '',
                 pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'aceternity.com',
+                port: '',
+                pathname: '/**',
             }
         ]
     },

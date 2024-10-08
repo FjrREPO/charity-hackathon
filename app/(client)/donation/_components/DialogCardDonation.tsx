@@ -87,7 +87,7 @@ export const DialogCardDonation: React.FC<DialogCardDonationProps> = ({ trigger,
     return (
         <Dialog>
             <DialogTrigger asChild>{trigger}</DialogTrigger>
-            <DialogContent className="sm:max-w-[425px] max-w-[90vw]">
+            <DialogContent className="sm:max-w-[425px] max-w-[90vw] rounded-lg">
                 <AnimatePresence>
                     <motion.div
                         initial="hidden"
