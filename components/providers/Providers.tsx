@@ -5,7 +5,24 @@ import React, { ReactNode, useState } from "react";
 import { ThemeProvider } from "./ThemeProvider";
 import { wagmiAdapter, projectId } from '@/lib/reown/config'
 import { createAppKit } from '@reown/appkit/react'
-import { mainnet, arbitrum, avalanche, base, optimism, polygon } from '@reown/appkit/networks'
+import { 
+    mainnet, 
+    arbitrum, 
+    avalanche, 
+    base, 
+    optimism, 
+    polygon,
+    sepolia,
+    gnosis,
+    zkSync,
+    zora,
+    celo,
+    aurora,
+    baseSepolia,
+    solana,
+    solanaDevnet,
+    solanaTestnet
+} from '@reown/appkit/networks'
 import { cookieToInitialState, WagmiProvider, type Config } from 'wagmi'
 
 if (!projectId) {
@@ -22,7 +39,25 @@ const metadata = {
 createAppKit({
     adapters: [wagmiAdapter],
     projectId,
-    networks: [mainnet, arbitrum, avalanche, base, optimism, polygon],
+    networks: [
+        mainnet,
+        arbitrum,
+        avalanche,
+        base,
+        optimism,
+        polygon,
+        gnosis,
+        zkSync,
+        zora,
+        celo,
+        base,
+        aurora,
+        baseSepolia,
+        solana,
+        solanaDevnet,
+        solanaTestnet,
+        sepolia
+    ],
     defaultNetwork: mainnet,
     metadata: metadata,
     features: {
