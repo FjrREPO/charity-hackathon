@@ -21,9 +21,9 @@ export const HeroParallax = ({
     title: string;
     description: string;
 }) => {
-    const firstRow = products.slice(0, 5);
-    const secondRow = products.slice(5, 10);
-    const thirdRow = products.slice(10, 15);
+    const firstRow = products.slice(0, 7);
+    const secondRow = products.slice(8, 15);
+    const thirdRow = products.slice(0, 7);
     const ref = React.useRef(null);
     const { scrollYProgress } = useScroll({
         target: ref,
@@ -59,7 +59,7 @@ export const HeroParallax = ({
     return (
         <div
             ref={ref}
-            className="h-[350vh] overflow-hidden  antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
+            className="h-[230vh] sm:h-[2400px] overflow-hidden  antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
         >
             <Header title={title} description={description} />
             <motion.div
@@ -135,7 +135,7 @@ export const ProductCard = ({
                 y: -20,
             }}
             key={product.title}
-            className="group/product h-96 w-[30rem] relative flex-shrink-0"
+            className="group/product h-[200px] sm:h-96 w-[250px] sm:w-[30rem] relative flex-shrink-0"
         >
             <div
                 className="block group-hover/product:shadow-2xl "
@@ -144,7 +144,7 @@ export const ProductCard = ({
                     src={product.thumbnail}
                     height="600"
                     width="600"
-                    className="object-cover object-left-top absolute h-full w-full inset-0"
+                    className="object-cover object-center absolute h-[200px] w-[250px] sm:w-full sm:h-full inset-0"
                     alt={product.title}
                 />
             </div>
