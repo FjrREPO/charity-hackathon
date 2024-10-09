@@ -40,3 +40,33 @@ interface TransactionAlchemy {
     toAddress: string;
     excludeZeroValue: boolean;
 }
+
+interface ProofItem {
+    id: number;
+    account: string;
+    to: string;
+    value: number;
+    hash: string;
+    timestamp: number;
+}
+
+interface RawContractTransferHistory {
+    value: string;
+    address: string | null;
+    decimal: string;
+}
+
+interface TransactionTransferHistory {
+    blockNum: string;
+    uniqueId: string;
+    hash: string;
+    from: string;
+    to: string;
+    value: number;
+    erc721TokenId: string | null;
+    erc1155Metadata: string | null;
+    tokenId: string | null;
+    asset: string;
+    category: string;
+    rawContract: RawContract;
+}
