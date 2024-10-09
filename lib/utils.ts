@@ -12,4 +12,3 @@ export function formatPrice(num: bigint): string {
   const formatted = (Number(num) / 1000000).toFixed(6).replace('.', ',');
   return formatted;
 }
-
