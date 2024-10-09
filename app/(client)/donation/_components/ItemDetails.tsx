@@ -44,3 +44,5 @@ export const ItemDetails: React.FC<ItemDetailsProps> = React.memo(({ item, balan
         <Separator />
     </div>
 ));
+
+DetailRow.displayName = 'DetailRow';

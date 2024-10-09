@@ -31,30 +31,19 @@ export const DialogCardDonation: React.FC<DialogCardDonationProps> = ({ trigger,
     const [isPending, setIsPending] = useState(false);
     const [isConfirming, setIsConfirming] = useState(false);
     const [isLoading, setLoading] = useState(false);
-    const [balance, setBalance] = useState<bigint | undefined>(undefined);
 
-    const fetchBalance = useCallback(async () => {
-        setLoading(true);
-        try {
-            const result: bigint = await useERC20Balance(address as HexAddress, USDC_ADDRESS);
-            setBalance(result);
-        } catch (error) {
-            console.error("Failed to fetch balance", error);
-        } finally {
-            setLoading(false);
-        }
-    }, [address]);
+    const { balance, loading: balanceLoading } = useERC20Balance(address as HexAddress, USDC_ADDRESS);
 
-    const debouncedFetchBalance = useMemo(() => debounce(fetchBalance, 500), [fetchBalance]);
+    const debouncedSetLoading = useMemo(() => debounce((loading: boolean) => {
+        setLoading(loading);
+    }, 500), []);
 
     useEffect(() => {
-        if (address) {
-            debouncedFetchBalance();
-        }
+        debouncedSetLoading(balanceLoading);
         return () => {
-            debouncedFetchBalance.cancel();
+            debouncedSetLoading.cancel();
         };
-    }, [address, debouncedFetchBalance]);
+    }, [balanceLoading, debouncedSetLoading]);
 
     const handleAlertClose = useCallback(() => {
         setIsAlertOpen(false);
