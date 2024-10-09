@@ -11,6 +11,12 @@ import { AlertDialogTransaction } from './AlertDialogTransaction';
 import { useERC20Balance } from '@/hooks/useERC20Balance';
 import { USDC_ADDRESS } from '@/lib/abi/config';
 import debounce from 'lodash.debounce';
+import {
+    useConnectModal,
+} from '@rainbow-me/rainbowkit';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import Image from 'next/image';
 
 interface DialogCardDonationProps {
     trigger: React.ReactNode;
@@ -31,6 +37,7 @@ export const DialogCardDonation: React.FC<DialogCardDonationProps> = ({ trigger,
     const [isPending, setIsPending] = useState(false);
     const [isConfirming, setIsConfirming] = useState(false);
     const [isLoading, setLoading] = useState(false);
+    const { openConnectModal } = useConnectModal();
 
     const { balance, loading: balanceLoading } = useERC20Balance(address as HexAddress, USDC_ADDRESS);
 
@@ -62,7 +69,20 @@ export const DialogCardDonation: React.FC<DialogCardDonationProps> = ({ trigger,
         <>
             {(isPending || isConfirming) && <LoadingScreen isOpen={isPending || isConfirming} isClosed={!isPending && !isConfirming} />}
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <DialogTrigger asChild>{trigger}</DialogTrigger>
+                {address ? (<DialogTrigger asChild>{trigger}</DialogTrigger>) :
+                    (
+                        <Button variant={"default"} className="flex flex-row gap-2" onClick={openConnectModal}>
+                            <Image
+                                src={item.coins?.image || ""}
+                                alt={item.coins?.name || ""}
+                                width={24}
+                                height={24}
+                                className="w-6 h-6"
+                            />
+                            <Label>
+                                {item.price}
+                            </Label>
+                        </Button>)}
                 <DialogContent className="sm:max-w-[425px] max-w-[90vw] rounded-lg">
                     <AnimatePresence>
                         <motion.div
