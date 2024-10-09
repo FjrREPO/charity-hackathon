@@ -9,7 +9,7 @@ interface AlertDialogTransactionProps {
     onClose: () => void;
 }
 
-export const AlertDialogTransaction: React.FC<AlertDialogTransactionProps> = React.memo(({ isOpen, transactionHash, onClose }) => {
+const AlertDialogTransactionComponent: React.FC<AlertDialogTransactionProps> = ({ isOpen, transactionHash, onClose }) => {
     return (
         <AlertDialog open={isOpen}>
             <AlertDialogContent>
@@ -35,4 +35,7 @@ export const AlertDialogTransaction: React.FC<AlertDialogTransactionProps> = Rea
             </AlertDialogContent>
         </AlertDialog>
     );
-})
+};
+
+export const AlertDialogTransaction = React.memo(AlertDialogTransactionComponent);
+AlertDialogTransaction.displayName = 'AlertDialogTransaction';
