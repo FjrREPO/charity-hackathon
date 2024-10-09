@@ -12,9 +12,15 @@ import { Beams } from "@/components/cards/beams";
 import { Rays } from "@/components/cards/rays";
 import Link from "next/link";
 import { DialogCardDonation } from "./DialogCardDonation";
+import { useAccount } from "wagmi";
+import {
+    useConnectModal,
+} from '@rainbow-me/rainbowkit';
 
 export function CardDonation({ id, name, link, image, price, source, coins }: Item) {
+    const { address } = useAccount();
     const [hovering, setHovering] = useState(false);
+    const { openConnectModal } = useConnectModal();
 
     return (
         <div className="max-w-[300px]">
@@ -47,18 +53,33 @@ export function CardDonation({ id, name, link, image, price, source, coins }: It
                         </Label>
                         <DialogCardDonation
                             trigger={
-                                <Button variant={"default"} className="flex flex-row gap-2">
-                                    <Image
-                                        src={coins?.image || ""}
-                                        alt={coins?.name || ""}
-                                        width={24}
-                                        height={24}
-                                        className="w-6 h-6"
-                                    />
-                                    <Label>
-                                        {price}
-                                    </Label>
-                                </Button>
+                                address ? (
+                                    <Button variant={"default"} className="flex flex-row gap-2">
+                                        <Image
+                                            src={coins?.image || ""}
+                                            alt={coins?.name || ""}
+                                            width={24}
+                                            height={24}
+                                            className="w-6 h-6"
+                                        />
+                                        <Label>
+                                            {price}
+                                        </Label>
+                                    </Button>
+                                ) : (
+                                    <Button variant={"default"} className="flex flex-row gap-2" onClick={openConnectModal}>
+                                        <Image
+                                            src={coins?.image || ""}
+                                            alt={coins?.name || ""}
+                                            width={24}
+                                            height={24}
+                                            className="w-6 h-6"
+                                        />
+                                        <Label>
+                                            {price}
+                                        </Label>
+                                    </Button>
+                                )
                             }
                             item={{ id, name, link, image, price, source, coins }}
                         />
