@@ -6,7 +6,6 @@ import { toast } from "sonner";
 import { useAccount } from "wagmi";
 import { useQuery } from "@tanstack/react-query";
 import SkeletonWrapper from "@/components/SkeletonWrapper";
-import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 
 export default function TableProof() {

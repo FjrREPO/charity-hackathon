@@ -21,7 +21,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useState } from "react";
-import { DataTableFacetedFilter } from "./FacetedFilter";
 import { DataTableViewOptions } from "./ColumnToggle";
 import { Button } from "../../ui/button";
 import {
