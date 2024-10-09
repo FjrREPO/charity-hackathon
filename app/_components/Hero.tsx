@@ -40,7 +40,7 @@ export default function Hero() {
     };
 
     return (
-        <WavyBackground className="max-w-full h-full flex flex-col justify-center items-center mx-auto">
+        <WavyBackground className="max-w-full h-svh flex flex-col justify-center items-center mx-auto">
             <motion.div
                 variants={containerVariants}
                 initial="hidden"

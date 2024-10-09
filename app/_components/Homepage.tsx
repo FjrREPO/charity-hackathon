@@ -8,7 +8,9 @@ export default function Homepage() {
     return (
         <>
             <Hero />
-            <PreviewParallax />
+            <div className="hidden sm:block">
+                <PreviewParallax />
+            </div>
         </>
     );
 }

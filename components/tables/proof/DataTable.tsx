@@ -156,8 +156,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  Data tidak tersedia silahkan untuk menambahkan data transaksi
-                  terlebih dahulu.
+                  Data not found, please connect wallet or make a transaction first.
                 </TableCell>
               </TableRow>
             )}
@@ -185,7 +184,7 @@ export function DataTable<TData, TValue>({
           </Button>
         </div>
         <Label>
-          Halaman {table.getState().pagination.pageIndex + 1} dari {table.getPageCount()}
+          Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
         </Label>
       </div>
     </>
