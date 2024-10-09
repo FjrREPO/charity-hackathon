@@ -1,6 +1,11 @@
 interface Window {
     ethereum: any;
+    chrome?: {
+        cookieStore?: CookieStore;
+    };
 }
+
+type HexAddress = `0x${string}`;
 
 interface CoinItem {
     id: string;
