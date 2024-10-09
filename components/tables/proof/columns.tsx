@@ -4,6 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "./ColumnHeader";
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
+import { formatAddress } from "@/lib/utils";
 
 export type TransactionHistoryRow = TransactionTransferHistory;
 
@@ -35,7 +36,7 @@ export const columns: ColumnDef<TransactionHistoryRow>[] = [
       />
     ),
     cell: ({ row }) => (
-      <div className="flex items-center truncate w-full justify-between">
+      <div className="flex items-center truncate w-fit justify-between">
         <span className="mr-2">{row.original.hash}</span>
         <button
           onClick={() => copyToClipboard(row.original.hash)}
@@ -55,7 +56,7 @@ export const columns: ColumnDef<TransactionHistoryRow>[] = [
         title="Sender"
       />
     ),
-    cell: ({ row }) => <div>{row.original.from}</div>,
+    cell: ({ row }) => <div>{formatAddress(row.original.from)}</div>,
   },
   {
     accessorKey: "to",
@@ -65,7 +66,7 @@ export const columns: ColumnDef<TransactionHistoryRow>[] = [
         title="Receiver"
       />
     ),
-    cell: ({ row }) => <div>{row.original.to}</div>,
+    cell: ({ row }) => <div>{formatAddress(row.original.to)}</div>,
   },
   {
     accessorKey: "value",

@@ -12,3 +12,11 @@ export function formatPrice(num: bigint): string {
   const formatted = (Number(num) / 1000000).toFixed(6).replace('.', ',');
   return formatted;
 }
+
+export function formatAddress(inputString: string): string {
+  if (inputString.length <= 8) return inputString;
+
+  const firstPart = inputString.slice(0, 4); 
+  const lastPart = inputString.slice(-4); 
+  return `${firstPart}…${lastPart}`;
+}

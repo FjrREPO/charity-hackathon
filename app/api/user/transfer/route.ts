@@ -18,7 +18,10 @@ export async function GET() {
                 {
                     fromBlock: "0x0",
                     toBlock: "latest",
-                    toAddress: "0x3b4f0135465d444a5bd06ab90fc59b73916c85f5",
+                    toAddress: RECIPIENT_ADDRESS,
+                    contractAddresses: [
+                        USDC_ADDRESS
+                    ],
                     category: [
                         "erc20"
                     ],
