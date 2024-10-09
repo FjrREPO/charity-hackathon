@@ -35,8 +35,6 @@ interface DataTableProps<TData, TValue> {
   handleRefresh: () => void;
 }
 
-const emptyData: any[] = [];
-
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -46,7 +44,7 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const table = useReactTable({
-    data: data || emptyData,
+    data: data || [],
     columns,
     state: {
       sorting,
