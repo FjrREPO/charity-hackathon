@@ -51,10 +51,10 @@ export const ConnectButtonWallet = () => {
                             }
                             return (
                                 <div style={{ display: 'flex', gap: 12, zIndex: 50 }}>
-                                    <button
+                                    <Button
                                         onClick={openChainModal}
                                         style={{ display: 'flex', alignItems: 'center' }}
-                                        type="button"
+                                        variant={'outline'}
                                     >
                                         {chain.hasIcon && (
                                             <div
@@ -77,13 +77,13 @@ export const ConnectButtonWallet = () => {
                                             </div>
                                         )}
                                         {chain.name}
-                                    </button>
-                                    <button onClick={openAccountModal} type="button">
+                                    </Button>
+                                    <Button onClick={openAccountModal} variant={'outline'}>
                                         {account.displayName}
                                         {account.displayBalance
                                             ? ` (${account.displayBalance})`
                                             : ''}
-                                    </button>
+                                    </Button>
                                 </div>
                             );
                         })()}
