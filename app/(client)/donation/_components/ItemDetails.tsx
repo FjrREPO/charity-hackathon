@@ -11,12 +11,14 @@ interface ItemDetailsProps {
     loading: boolean;
 }
 
-const DetailRow: React.FC<{ label: string; value: string }> = ({ label, value }) => (
-    <div className="grid grid-cols-[90px_1fr] gap-2 items-center">
-        <Label className="font-bold text-sm">{label}</Label>
-        <Label className="text-md font-bold text-right line-clamp-1">{value}</Label>
-    </div>
-);
+const DetailRow: React.FC<{ label: string; value: string }> = function DetailRow({ label, value }) {
+    return (
+        <div className="grid grid-cols-[90px_1fr] gap-2 items-center">
+            <Label className="font-bold text-sm">{label}</Label>
+            <Label className="text-md font-bold text-right line-clamp-1">{value}</Label>
+        </div>
+    );
+};
 
 export const ItemDetails: React.FC<ItemDetailsProps> = React.memo(({ item, balance, loading }) => (
     <div className="flex flex-col w-full gap-3">
@@ -45,4 +47,6 @@ export const ItemDetails: React.FC<ItemDetailsProps> = React.memo(({ item, balan
     </div>
 ));
 
-DetailRow.displayName = 'DetailRow';
+ItemDetails.displayName = 'ItemDetails';
+
+export default ItemDetails;
