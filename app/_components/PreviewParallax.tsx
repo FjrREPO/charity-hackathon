@@ -53,38 +53,38 @@ export const products = [
             "https://res.cloudinary.com/dutlw7bko/image/upload/v1728349389/charity-hackathon/dokumentasi/IMG-20240831-WA0023-5__dupcGE-transformed_qat8m1.jpg",
     },
     {
-        title: "Yayasan Anak Yatim di Jakarta",
+        title: "Yayasan Anak Yatim di Malang",
         thumbnail:
             "https://res.cloudinary.com/dutlw7bko/image/upload/v1728349517/charity-hackathon/dokumentasi/HUM_6671_h4gxka.jpg",
     },
     {
-        title: "Yayasan Anak Yatim di Jakarta",
+        title: "Yayasan Anak Yatim di Surabaya",
         thumbnail:
             "https://res.cloudinary.com/dutlw7bko/image/upload/v1728349826/charity-hackathon/dokumentasi/DSC09662-min-1024x683-transformed_amzcrh.jpg",
     },
     {
-        title: "Yayasan Anak Yatim di Jakarta",
+        title: "Yayasan Anak Yatim di Maluku",
         thumbnail:
             "https://res.cloudinary.com/dutlw7bko/image/upload/v1728349826/charity-hackathon/dokumentasi/Yayasan-Anak-Yatim-di-Jakarta-Timur-transformed_khweuu.jpg",
     },
 
     {
-        title: "Yayasan Anak Yatim di Jakarta",
+        title: "Yayasan Anak Yatim di Brebes",
         thumbnail:
             "https://res.cloudinary.com/dutlw7bko/image/upload/v1728349827/charity-hackathon/dokumentasi/IMG-20231023-WA0005-transformed_uesflc.jpg",
     },
     {
-        title: "Yayasan Anak Yatim di Jakarta",
+        title: "Yayasan Anak Yatim di Bandung",
         thumbnail:
             "https://res.cloudinary.com/dutlw7bko/image/upload/v1728349967/charity-hackathon/dokumentasi/IMG-20240617-WA0137-transformed_lukc7u.jpg",
     },
     {
-        title: "Yayasan Anak Yatim di Jakarta",
+        title: "Yayasan Anak Yatim di Cirebon",
         thumbnail:
             "https://res.cloudinary.com/dutlw7bko/image/upload/v1728349967/charity-hackathon/dokumentasi/Yayasan-Bersih-dan-anak-disabilitas-transformed_wlb3ds.jpg",
     },
     {
-        title: "Yayasan Anak Yatim di Jakarta",
+        title: "Yayasan Anak Yatim di Sidoarjo",
         thumbnail:
             "https://res.cloudinary.com/dutlw7bko/image/upload/v1728349967/charity-hackathon/dokumentasi/DSC08044-transformed_qgv5vh.jpg",
     },

@@ -3,14 +3,13 @@
 import coins from "@/data/coins/coins.json";
 import { Label } from "@/components/ui/label";
 import { AnimatePresence, motion } from "framer-motion";
-import ConnectButton from "@/components/wallet/connect-button";
 import items from "@/data/items/items.json";
 import { CardDonation } from "./CardDonation";
 
 const cardVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: 20 }
+    exit: { opacity: 0, y: 20 },
 };
 
 export const Donation = () => {
@@ -23,19 +22,11 @@ export const Donation = () => {
                     </Label>
                     <Label>Select an item to start donation</Label>
                 </div>
-                <motion.div
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="w-full flex justify-center pt-5"
-                >
-                    <ConnectButton />
-                </motion.div>
                 <AnimatePresence mode="wait">
                     <div className="w-full p-4">
                         <div className="space-y-1">
                             <div className="flex flex-row flex-wrap gap-5 justify-center">
-                                {items.map((item: Item, index: number) => (
+                                {items.map((item, index) => (
                                     <motion.div
                                         key={item.id}
                                         variants={cardVariants}
@@ -44,7 +35,7 @@ export const Donation = () => {
                                         exit="exit"
                                         transition={{
                                             duration: 0.5,
-                                            delay: index * 0.25 
+                                            delay: index * 0.25,
                                         }}
                                     >
                                         <CardDonation

@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Label } from "../ui/label";
 import Logo from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
+import { ConnectButtonWallet } from "../wallet/connect-button-wallet";
 
 const items = [
   { label: "Home", link: "/" },
@@ -67,9 +68,9 @@ function DesktopNavbar() {
       }}
     >
       <div className="hidden md:block">
-        <nav className="flex items-center justify-between gap-x-4 p-5">
+        <nav className="grid grid-cols-3 items-center gap-x-4 p-5">
           <Logo />
-          <div className="flex flex-row gap-x-4">
+          <div className="flex flex-row justify-center gap-x-4">
             {items.map((item, index) => (
               <Link key={index} href={item.link} className="cursor-pointer">
                 <Label 
@@ -82,7 +83,8 @@ function DesktopNavbar() {
               </Link>
             ))}
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-end gap-2">
+            <ConnectButtonWallet/>
             <ThemeToggle />
           </div>
         </nav>
