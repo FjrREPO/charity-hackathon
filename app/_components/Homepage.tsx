@@ -1,16 +1,14 @@
 "use client";
 
 import Hero from "./Hero";
-import { PreviewParallax } from "./PreviewParallax";
+import ImageSlider from "./ImageSlider";
 
 export default function Homepage() {
 
     return (
         <>
             <Hero />
-            <div className="hidden sm:block">
-                <PreviewParallax />
-            </div>
+            <ImageSlider/>
         </>
     );
 }

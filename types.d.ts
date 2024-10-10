@@ -33,6 +33,11 @@ interface Item {
     coins?: CoinItem;
 }
 
+interface Foundation {
+    title: string;
+    thumbnail: string;
+}
+
 interface TransactionAlchemy {
     contractAddresses: string;
     category: string[];

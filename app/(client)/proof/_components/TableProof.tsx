@@ -16,11 +16,11 @@ export default function TableProof() {
         setHasMounted(true);
     }, []);
 
-    const { data: transactionsHistory, isLoading, refetch } = useQuery<TransactionTransferHistory[]>({
-        queryKey: ["transfer"],
-        queryFn: () => fetch(`/api/user/transfer`).then((res) => res.json()),
+    const { data: transactionsHistory, isLoading, refetch, isRefetching } = useQuery<TransactionTransferHistory[]>({
+        queryKey: ["transfer", address],
+        queryFn: () => fetch(`/api/user/transfer?address=${address}`).then((res) => res.json()),
         enabled: !!address,
-        refetchInterval: 10000,
+        refetchInterval: 60000,
     });
 
     const handleRefresh = () => {
@@ -32,18 +32,17 @@ export default function TableProof() {
     };
 
     if (!hasMounted) {
-        return null; 
+        return null;
     }
 
     return (
         <div className="w-full space-y-4 pt-[100px] p-5">
-            <SkeletonWrapper isLoading={isLoading}>
-                <DataTable
-                    data={transactionsHistory || []}
-                    columns={columns}
-                    handleRefresh={handleRefresh}
-                />
-            </SkeletonWrapper>
+            <DataTable
+                data={transactionsHistory || []}
+                columns={columns}
+                handleRefresh={handleRefresh}
+                isLoading={isLoading || isRefetching}
+            />
         </div>
     );
 }
