@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion, stagger, useAnimate } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -15,7 +15,9 @@ export const TextGenerateEffect = ({
     duration?: number;
 }) => {
     const [scope, animate] = useAnimate();
+    const [showClosingQuote, setShowClosingQuote] = useState(false);
     const wordsArray = words.split(" ");
+
     useEffect(() => {
         animate(
             "span",
@@ -24,36 +26,38 @@ export const TextGenerateEffect = ({
                 filter: filter ? "blur(0px)" : "none",
             },
             {
-                duration: duration ? duration : 1,
+                duration: duration,
                 delay: stagger(0.2),
             }
-        );
-    }, [scope.current]);
+        ).then(() => {
+            setTimeout(() => {
+                setShowClosingQuote(true);
+            }, duration * 1000);
+        });
+    }, [scope.current, animate, duration, filter]);
 
-    const renderWords = () => {
-        return (
-            <motion.div ref={scope}>
-                {wordsArray.map((word, idx) => {
-                    return (
-                        <motion.span
-                            key={word + idx}
-                            className="dark:text-white text-black opacity-0"
-                            style={{
-                                filter: filter ? "blur(10px)" : "none",
-                            }}
-                        >
-                            &rdquo;{word}&rdquo;{" "}
-                        </motion.span>
-                    );
-                })}
-            </motion.div>
-        );
-    };
+    const renderWords = () => (
+        <motion.div ref={scope}>
+            &ldquo;
+            {wordsArray.map((word, idx) => (
+                <motion.span
+                    key={word + idx}
+                    className="opacity-0"
+                    style={{
+                        filter: filter ? "blur(10px)" : "none",
+                    }}
+                >
+                    {word}{" "}
+                </motion.span>
+            ))}
+            {showClosingQuote && <>&rdquo;</>}
+        </motion.div>
+    );
 
     return (
         <div className={cn("font-bold", className)}>
             <div className="mt-4">
-                <div className=" dark:text-white text-black text-2xl leading-snug tracking-wide">
+                <div className="text-4xl text-center leading-snug tracking-wide">
                     {renderWords()}
                 </div>
             </div>
