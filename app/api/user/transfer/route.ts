@@ -1,7 +1,10 @@
 import { RECIPIENT_ADDRESS, USDC_ADDRESS } from "@/lib/abi/config";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req: Request) {
+    const { searchParams } = new URL(req.url);
+    const address = searchParams.get('address');
+
     const url = 'https://base-mainnet.g.alchemy.com/v2/vwDTCZX0XZnU6flxj8YzYZuMaOKI3EX9';
 
     const response = await fetch(url, {
@@ -19,6 +22,7 @@ export async function GET() {
                     fromBlock: "0x0",
                     toBlock: "latest",
                     toAddress: RECIPIENT_ADDRESS,
+                    fromAddress: address,
                     contractAddresses: [
                         USDC_ADDRESS
                     ],
