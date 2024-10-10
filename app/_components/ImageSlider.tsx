@@ -21,7 +21,7 @@ const ImageSlider = () => {
                     0: {
                         slidesPerView: 1,
                     },
-                    800: {
+                    700: {
                         slidesPerView: 3,
                     },
                 }}
@@ -46,9 +46,9 @@ const ImageSlider = () => {
                         <BlurImage
                             src={item.thumbnail}
                             alt={`Image ${index + 1}`}
-                            width={1000}
-                            height={600}
-                            className="rounded-lg object-cover w-full h-auto"
+                            width={600}
+                            height={400}
+                            className="rounded-lg object-cover w-auto h-auto"
                         />
                     </SwiperSlide>
                 ))}

@@ -114,7 +114,7 @@ export const ConfirmationForm: React.FC<ConfirmationFormProps> = ({
                             {isConfirming ? 'Confirming...' : 'Processing...'}
                         </span>
                     ) : (
-                        'Buy Now'
+                        'Donate Now'
                     )}
                 </Button>
                 {insufficientBalance && (
