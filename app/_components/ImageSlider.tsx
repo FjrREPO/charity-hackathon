@@ -8,7 +8,6 @@ import "swiper/css/navigation";
 import { Autoplay, EffectCoverflow, Navigation, Pagination } from "swiper/modules";
 import foundation from "@/data/foundation/foundation.json";
 
-import Image from "next/image";
 import BlurImage from "@/components/BlurImage";
 
 const ImageSlider = () => {
