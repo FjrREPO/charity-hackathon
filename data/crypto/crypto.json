@@ -1,0 +1,42 @@
+[
+    {
+        "name": "solana",
+        "src": "https://telaga.charity/wp-content/uploads/2024/06/Solana_logo.png"
+    },
+    {
+        "name": "tether",
+        "src": "https://telaga.charity/wp-content/uploads/2024/06/Tether-USDT-icon-1.png"
+    },
+    {
+        "name": "chainlink",
+        "src": "https://telaga.charity/wp-content/uploads/2024/06/ChainLink-LINK-Logo.webp"
+    },
+    {
+        "name": "render",
+        "src": "https://telaga.charity/wp-content/uploads/2024/06/render.png"
+    },
+    {
+        "name": "wif",
+        "src": "https://telaga.charity/wp-content/uploads/2024/06/wif.webp"
+    },
+    {
+        "name": "arweave",
+        "src": "https://telaga.charity/wp-content/uploads/2024/06/arweave.png"
+    },
+    {
+        "name": "grt",
+        "src": "https://telaga.charity/wp-content/uploads/2024/06/grt.png"
+    },
+    {
+        "name": "bonk",
+        "src": "https://telaga.charity/wp-content/uploads/2024/06/bonk.png"
+    },
+    {
+        "name": "jupiter",
+        "src": "https://telaga.charity/wp-content/uploads/2024/06/jupiter.png"
+    },
+    {
+        "name": "pyth",
+        "src": "https://telaga.charity/wp-content/uploads/2024/06/pyth.jpg"
+    }
+]
