@@ -1,0 +1,77 @@
+import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
+// import { useReadContract, useWriteContract } from 'wagmi';
+// import donationABI from '@/lib/abi/donationABI.json';
+// import { MAIN_ADDRESS } from '@/lib/abi/config';
+// import { convertBigIntToNumber } from '@/lib/utils';
+
+export const ProofButton = () => {
+
+    // const { data: currentTransactionId } = useReadContract({
+    //     abi: donationABI,
+    //     functionName: 'currentTransactionId',
+    //     address: MAIN_ADDRESS as HexAddress
+    // })
+
+    // const {
+    //     data: hash,
+    //     isPending,
+    //     writeContract
+    // } = useWriteContract()
+
+    // const handleSubmit = useCallback((data: FormValues) => {
+    //     if (!data.confirmed) {
+    //         toast.error('Please confirm before submitting')
+    //         return
+    //     }
+
+    //     try {
+    //         if (!currentTransactionId) {
+    //             toast.error('Please connect your wallet first')
+    //         }
+
+    //         writeContract({
+    //             abi: donationABI,
+    //             address: "0x169059c8c8955007e9264a6d11500a67fc30ef2d",
+    //             functionName: 'proveDonation',
+    //             args: [
+    //                 BigInt((convertBigIntToNumber(currentTransactionId as bigint) * 1000000) + 1),
+    //             ],
+    //         })
+    //         toast.success('Product added successfully')
+    //     } catch (error) {
+    //         console.error('Create error:', error)
+    //         toast.error('Create failed. Please try again.')
+    //     }
+    // }, [writeContract, currentTransactionId])
+
+    const handleGenerateProof = async () => {
+        try {
+            const response = await fetch('/api/proof', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                //(convertBigIntToNumber(currentTransactionId as bigint) * 1000000) + 1
+                body: JSON.stringify(1),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to generate proof');
+            }
+
+            const data = await response.json();
+            toast.success(`Proof generated successfully, proofId: ${data.proofId}`);
+            console.log('proof = ', data);
+        } catch (error) {
+            console.error('Error generating proof:', error);
+            toast.error('Failed to generate proof');
+        }
+    };
+
+    return (
+        <Button onClick={handleGenerateProof}>
+            Generate Proof
+        </Button>
+    );
+};

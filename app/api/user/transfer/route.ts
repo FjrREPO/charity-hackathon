@@ -1,4 +1,4 @@
-import { RECIPIENT_ADDRESS, USDC_ADDRESS } from "@/lib/abi/config";
+import { MAIN_ADDRESS, USDC_ADDRESS } from "@/lib/abi/config";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
@@ -21,7 +21,7 @@ export async function GET(req: Request) {
                 {
                     fromBlock: "0x0",
                     toBlock: "latest",
-                    toAddress: RECIPIENT_ADDRESS,
+                    toAddress: MAIN_ADDRESS, //receipt address
                     fromAddress: address,
                     contractAddresses: [
                         USDC_ADDRESS

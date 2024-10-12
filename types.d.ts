@@ -1,5 +1,4 @@
 interface Window {
-    ethereum: any;
     chrome?: {
         cookieStore?: CookieStore;
     };
