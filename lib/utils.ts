@@ -20,3 +20,17 @@ export function formatAddress(inputString: string): string {
   const lastPart = inputString.slice(-4); 
   return `${firstPart}…${lastPart}`;
 }
+
+export function convertBigIntToNumber(bigIntValue: bigint): number {
+  return Number(bigIntValue) / 1_000_000;
+}
+
+export function convertNumberToBigInt(num: number): bigint {
+  return BigInt(num * 1_000_000);
+}
+
+export function formatRegex(invoice: string) {
+  const escapedInvoice = invoice.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  
+  return new RegExp(`^${escapedInvoice}$`);
+}

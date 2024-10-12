@@ -82,7 +82,9 @@ export const DialogCardDonation: React.FC<DialogCardDonationProps> = ({ trigger,
                             <Label>
                                 {item.price}
                             </Label>
-                        </Button>)}
+                        </Button>
+                    )
+                }
                 <DialogContent className="sm:max-w-[425px] max-w-[90vw] rounded-lg">
                     <AnimatePresence>
                         <motion.div

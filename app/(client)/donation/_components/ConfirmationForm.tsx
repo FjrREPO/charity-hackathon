@@ -1,11 +1,18 @@
+"use client"
+
 import React, { useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
+import { useWriteContract, useWaitForTransactionReceipt, useReadContract, useAccount } from 'wagmi';
 import { Form, FormField, FormItem, FormLabel, FormControl, FormDescription } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { USDC_ADDRESS, RECIPIENT_ADDRESS } from '@/lib/abi/config';
+import { MAIN_ADDRESS, USDC_ADDRESS } from '@/lib/abi/config';
 import { erc20Abi } from 'viem';
+import donationABI from '@/lib/abi/donationABI.json';
+import { 
+    convertBigIntToNumber, 
+} from '@/lib/utils';
+import { toast } from 'sonner';
 
 interface ConfirmationFormProps {
     item: Item;
@@ -29,6 +36,7 @@ export const ConfirmationForm: React.FC<ConfirmationFormProps> = ({
     onError
 }) => {
     const form = useForm<FormValues>();
+    const { address } = useAccount();
 
     const {
         data: hash,
@@ -43,30 +51,67 @@ export const ConfirmationForm: React.FC<ConfirmationFormProps> = ({
         hash
     });
 
+    const { data: allowance } = useReadContract({
+        abi: erc20Abi,
+        address: USDC_ADDRESS,
+        functionName: 'allowance',
+        args: [
+            address as `0x${string}`,
+            MAIN_ADDRESS
+        ],
+    });
+
+    const { data: price } = useReadContract({
+        abi: donationABI,
+        address: MAIN_ADDRESS,
+        functionName: 'products',
+        args: [item.id],
+    });
+
     const insufficientBalance = useMemo(() =>
-        balance !== undefined && parseInt(balance.toString())/1000000 < item.price,
+        balance !== undefined && convertBigIntToNumber(balance) < item.price,
         [balance, item.price]
     );
 
-    const handleSubmit = useCallback((data: FormValues) => {
+    const needsApproval = useMemo(() => 
+        allowance !== undefined && price !== undefined && 
+        convertBigIntToNumber(allowance) < convertBigIntToNumber(price as bigint),
+        [allowance, price]
+    );
+
+    const handleSubmit = useCallback(async (data: FormValues) => {
         if (!data.confirmed || insufficientBalance) return;
 
         try {
             onPending();
-            writeContract({
-                abi: erc20Abi,
-                address: USDC_ADDRESS,
-                functionName: 'transfer',
-                args: [
-                    RECIPIENT_ADDRESS,
-                    BigInt(item.price),
-                ],
+
+            if (needsApproval) {
+                await writeContract({
+                    abi: erc20Abi,
+                    address: USDC_ADDRESS,
+                    functionName: 'approve',
+                    args: [
+                        MAIN_ADDRESS,
+                        BigInt(10)
+                    ],
+                });
+
+                await new Promise(resolve => setTimeout(resolve, 2000)); 
+            }
+
+            await writeContract({
+                abi: donationABI,
+                address: MAIN_ADDRESS,
+                functionName: 'donate',
+                args: [item.id],
             });
+
         } catch (error) {
             console.error('Transaction error:', error);
             onError();
+            toast.error('Transaction failed. Please try again.');
         }
-    }, [insufficientBalance, writeContract, item.price, onPending, onError]);
+    }, [insufficientBalance, onPending, onError, item.id, writeContract, needsApproval]);
 
     React.useEffect(() => {
         if (isPending) onPending();
@@ -75,8 +120,12 @@ export const ConfirmationForm: React.FC<ConfirmationFormProps> = ({
     }, [isPending, isConfirming, isConfirmed, hash, onPending, onConfirming, onSuccess]);
 
     const isSubmitDisabled = useMemo(() =>
-        isPending || insufficientBalance,
-        [isPending, form, insufficientBalance]
+        isPending ||
+        isConfirming ||
+        insufficientBalance ||
+        typeof allowance === 'undefined' ||
+        typeof price === 'undefined',
+        [isPending, isConfirming, insufficientBalance, allowance, price]
     );
 
     return (
@@ -113,6 +162,8 @@ export const ConfirmationForm: React.FC<ConfirmationFormProps> = ({
                         <span className="flex items-center">
                             {isConfirming ? 'Confirming...' : 'Processing...'}
                         </span>
+                    ) : needsApproval ? (
+                        'Approve & Donate'
                     ) : (
                         'Donate Now'
                     )}

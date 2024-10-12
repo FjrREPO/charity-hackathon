@@ -40,9 +40,22 @@ const nextConfig = {
             }
         ]
     },
-    webpack: config => {
-        config.externals.push('pino-pretty', 'lokijs', 'encoding')
-        return config
+    experimental: {
+        serverComponentsExternalPackages: ['@reclaimprotocol/zk-fetch'],
+    },
+    webpack: (config, { isServer }) => {
+        config.externals.push('pino-pretty', 'lokijs', 'encoding');
+        
+        if (!isServer) {
+            config.resolve.fallback = {
+                ...config.resolve.fallback,
+                fs: false,
+                net: false,
+                tls: false,
+            };
+        }
+        
+        return config;
     },
     headers() {
         return [
@@ -55,7 +68,7 @@ const nextConfig = {
                     { key: "Access-Control-Allow-Headers", value: "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version" },
                 ]
             }
-        ]
+        ];
     }
 };
 
