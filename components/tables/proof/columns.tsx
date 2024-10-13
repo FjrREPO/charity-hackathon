@@ -66,11 +66,11 @@ export const columns: ColumnDef<TransactionHistoryRow>[] = [
     ),
   },
   {
-    accessorKey: "marketplaceId",
+    accessorKey: "invoice",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title="Marketplace ID"
+        title="Invoice"
       />
     ),
     cell: ({ row }) => <div>{row.original.marketplaceId}</div>,
