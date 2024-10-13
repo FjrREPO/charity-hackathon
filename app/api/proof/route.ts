@@ -33,29 +33,23 @@ export async function POST(req: NextRequest) {
     const client = new ReclaimClient(reclaimId, reclaimSecret);
 
     const publicOptions = {
-      method: "GET",
+      method: "POST",
       headers: {
         accept: "application/json, text/plain, */*",
         "Content-Type": "application/json",
       },
+      body: JSON.stringify({
+        invoiceId: invoice,
+      }),
     };
 
-    // {
-    //     "id": 1,
-    //     "name": "Paket setelan 6 pcs anak laki-laki perempuan unisex usia 0 - 7 Tahun - CEWEK SEMUA, S",
-    //     "link": "https://www.tokopedia.com/foyakids/paket-setelan-6-pcs-anak-laki-laki-perempuan-unisex-usia-0-7-tahun-cewek-semua-s-b81cf",
-    //     "image": "https://images.tokopedia.net/img/cache/700/VqbcmM/2023/12/14/e5403d71-aed3-4560-9ac6-b7be1623ac74.jpg",
-    //     "price": 0.0001,
-    //     "source": "Tokopedia"
-    //   }
-
-    const link = `https://defiant-morna-rosyid-7ea20110.koyeb.app/api/donation/1`;
+    const link = `https://defiant-morna-rosyid-7ea20110.koyeb.app/verify-tokopedia`;
     const proof = await client
       .zkFetch(link, publicOptions, {
         responseMatches: [
           {
             type: "regex",
-            value: '.*"id":\\s(?<id>\\d+),.*',
+            value: '.*"invoiceId":\\s(?<id>\\d+).*',
           },
         ],
       })
@@ -71,12 +65,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
-        const isProofVerified = await verifyProof(proof);
-        if (!isProofVerified) {
-            return NextResponse.json({ error: 'Failed to verify proof' }, { status: 500 });
-        }
+    const isProofVerified = await verifyProof(proof);
+    if (!isProofVerified) {
+      return NextResponse.json(
+        { error: "Failed to verify proof" },
+        { status: 500 }
+      );
+    }
 
-        const proofData = transformForOnchain(proof);
+    const proofData = transformForOnchain(proof);
 
     return NextResponse.json({
       proofData,
