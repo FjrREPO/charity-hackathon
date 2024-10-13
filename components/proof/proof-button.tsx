@@ -1,11 +1,21 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { useFormContext } from 'react-hook-form';
+import { TableRHF } from '@/app/(client)/proof/_components/TableProof';
 
-export const ProofButton = ({ idItem }: { idItem?: number }) => {
+export const ProofButton = ({index }: { index: number }) => {
     const [isLoading, setIsLoading] = useState(false);
 
+    const {
+        getValues
+    } = useFormContext<TableRHF>()
+
     const handleGenerateProof = async () => {
+        const invoice = getValues(`invoices.${index}.value`)
+
+        // console.log(invoice)
+        
         setIsLoading(true);
         try {
             const response = await fetch('/api/proof', {
@@ -13,7 +23,7 @@ export const ProofButton = ({ idItem }: { idItem?: number }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ invoice: idItem?.toString() }),
+                body: JSON.stringify({ invoice: invoice }),
             });
 
             if (!response.ok) {
@@ -21,8 +31,8 @@ export const ProofButton = ({ idItem }: { idItem?: number }) => {
             }
 
             const data = await response.json();
+            console.log('Proof generated:', data);
             toast.success(`Proof generated successfully`);
-            console.log('proof = ', data.proofData);
         } catch (error) {
             console.error('Error generating proof:', error);
             toast.error('Failed to generate proof');
