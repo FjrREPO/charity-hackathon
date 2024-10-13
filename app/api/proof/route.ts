@@ -8,23 +8,17 @@ import {
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
-        // invoice from id item
-        const { invoice } = body;
+        const { itemId } = body;
 
-        if (!invoice) {
-            return NextResponse.json({ error: "Missing invoice" }, { status: 400 });
+        if (!itemId) {
+            return NextResponse.json({ error: "Missing itemId" }, { status: 400 });
         }
 
         const reclaimId = process.env.RECLAIM_ID;
         const reclaimSecret = process.env.RECLAIM_SECRET;
-        const verifyUrl = process.env.API_PROOF_URL;
 
         if (!reclaimId || !reclaimSecret) {
             return NextResponse.json({ error: "Missing reclaim credentials" }, { status: 400 });
-        }
-
-        if (!verifyUrl) {
-            return NextResponse.json({ error: 'Missing verify URL' }, { status: 400 });
         }
 
         const client = new ReclaimClient(reclaimId, reclaimSecret);
@@ -38,7 +32,7 @@ export async function POST(req: NextRequest) {
         };
 
         const proof = await client.zkFetch(
-            "https://run.mocky.io/v3/81c98130-f8a8-4b38-9ab8-284df41f7829",
+            `https://defiant-morna-rosyid-7ea20110.koyeb.app/api/donation/${itemId}`,
             publicOptions,
             {
                 responseMatches: [
@@ -55,12 +49,13 @@ export async function POST(req: NextRequest) {
         }
 
         const isProofVerified = await verifyProof(proof);
+        if (!isProofVerified) {
+            return NextResponse.json({ error: 'Failed to verify proof' }, { status: 500 });
+        }
+
         const proofData = transformForOnchain(proof);
 
-        return NextResponse.json({
-            proofData,
-            isProofVerified,
-        });
+        return NextResponse.json({proofData});
     } catch (error) {
         console.error('Error in /api/proof:', error);
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
