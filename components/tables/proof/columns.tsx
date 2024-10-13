@@ -6,7 +6,6 @@ import { Copy } from "lucide-react";
 import { toast } from "sonner";
 import { convertTimestampToDate, formatAddress } from "@/lib/utils";
 import { ProofButton } from "@/components/proof/proof-button";
-import CellInvoice from "@/components/tables/proof/CellInvoice";
 
 export type TransactionHistoryRow = TransactionContract;
 
@@ -77,38 +76,7 @@ export const columns: ColumnDef<TransactionHistoryRow>[] = [
     cell: ({ row }) => <div>{row.original.marketplaceId}</div>,
   },
   {
-    accessorKey: "proved",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="Proof Status"
-      />
-    ),
-    cell: ({ row }) => (
-      <p className="text-sm rounded-lg bg-gray-400/5 p-2 text-left font-medium">
-        {row.original.proved ? "Proved" : "Not Proved"}
-      </p>
-    ),
-  },
-  {
-    // input invoice
-    accessorKey: "invoice",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="Invoice"
-      />
-    ),
-    cell: ({ row }) => {
-      return (
-        <CellInvoice
-          index={row.index}
-        />
-      );
-    },
-  },
-  {
-    id: "generateProof",
+    accessorKey: "generateProof",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
@@ -117,9 +85,7 @@ export const columns: ColumnDef<TransactionHistoryRow>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div>
-          <ProofButton index={row.index} />
-        </div>
+        <ProofButton productId={row.original.productId} proveStatus={row.original.proved} />
       )
     },
   },

@@ -83,7 +83,6 @@ export default function TableProof() {
                 }
             }).filter((item): item is TransactionContract => item !== null);
             setDataTransaction(transactionContracts);
-            console.log('transactionContracts = ', transactionContracts);
         }
     }, [contractData]);
 
