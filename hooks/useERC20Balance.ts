@@ -3,7 +3,7 @@ import { readContract } from "@wagmi/core";
 import { config } from "@/lib/wagmi/config";
 import { abiBalance } from "@/lib/abi/abiBalance";
 
-export const useERC20Balance = (address: HexAddress, token: any) => {
+export const useERC20Balance = (address: HexAddress, token: HexAddress) => {
     const [balance, setBalance] = useState<bigint | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
