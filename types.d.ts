@@ -82,4 +82,5 @@ interface TransactionContract {
     marketplaceId: number;
     proved: boolean;
     link: string;
+    transactionId: number;
 }

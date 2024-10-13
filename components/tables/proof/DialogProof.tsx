@@ -11,7 +11,7 @@ import Image from 'next/image';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 
-export default function DialogProof({ trigger, productId }: { trigger: React.ReactNode, productId: number }) {
+export default function DialogProof({ trigger, productId, transactionId ,handleRefresh}: { trigger: React.ReactNode, productId: number, transactionId: number, handleRefresh: () => void }) {
     const item = items.find((item: Item) => item.id === productId);
 
     const [isLoading, setIsLoading] = useState(false);
@@ -82,7 +82,7 @@ export default function DialogProof({ trigger, productId }: { trigger: React.Rea
                 address: MAIN_ADDRESS,
                 functionName: 'proveDonation',
                 args: [
-                    BigInt(currentTransactionId as number),
+                    BigInt(transactionId),
                     BigInt(invoice),
                     data.proofData
                 ],
@@ -99,8 +99,9 @@ export default function DialogProof({ trigger, productId }: { trigger: React.Rea
         if (isConfirmed) {
             toast.success('Proof generated!');
             setIsOpen(false);
+            handleRefresh();
         }
-    }, [isConfirmed]);
+    }, [isConfirmed, handleRefresh]);
 
     const buttonText = isLoading ? 'Generating...' :
         isPending ? 'Confirming...' :
