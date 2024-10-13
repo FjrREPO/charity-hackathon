@@ -1,11 +1,40 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import { useWriteContract, useWaitForTransactionReceipt, useAccount, useReadContract } from 'wagmi';
+import donationABI from '@/lib/abi/donationABI.json';
+import { MAIN_ADDRESS } from '@/lib/abi/config';
 
 export const ProofButton = ({ idItem }: { idItem?: number }) => {
     const [isLoading, setIsLoading] = useState(false);
+    const { isConnected } = useAccount();
+
+    const { data: currentTransactionId } = useReadContract({
+        address: MAIN_ADDRESS as HexAddress,
+        abi: donationABI,
+        functionName: "currentTransactionId",
+    });
+
+    const {
+        writeContract,
+        data: hash,
+        isPending
+    } = useWriteContract()
+
+    const { isLoading: isConfirming, isSuccess: isConfirmed } =
+        useWaitForTransactionReceipt({ hash })
 
     const handleGenerateProof = async () => {
+        if (!isConnected) {
+            toast.error('Please connect your wallet first');
+            return;
+        }
+
+        if (!idItem) {
+            toast.error('Item ID is required');
+            return;
+        }
+
         setIsLoading(true);
         try {
             const response = await fetch('/api/proof', {
@@ -13,7 +42,7 @@ export const ProofButton = ({ idItem }: { idItem?: number }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ invoice: idItem?.toString() }),
+                body: JSON.stringify({ itemId: idItem.toString() }),
             });
 
             if (!response.ok) {
@@ -21,19 +50,54 @@ export const ProofButton = ({ idItem }: { idItem?: number }) => {
             }
 
             const data = await response.json();
-            toast.success(`Proof generated successfully`);
-            console.log('proof = ', data.proofData);
+
+            if (!writeContract) {
+                throw new Error('Write contract function is not available');
+            }
+
+            if (!currentTransactionId) {
+                throw new Error('Current transaction ID is not available');
+            }
+
+            writeContract({
+                abi: donationABI,
+                address: MAIN_ADDRESS,
+                functionName: 'proveDonation',
+                args: [
+                    BigInt(currentTransactionId as number),
+                    BigInt(idItem),
+                    data.proofData
+                ],
+            })
         } catch (error) {
             console.error('Error generating proof:', error);
-            toast.error('Failed to generate proof');
+            toast.error(error instanceof Error ? error.message : 'Failed to generate proof');
         } finally {
             setIsLoading(false);
         }
     };
 
+    React.useEffect(() => {
+        if (isConfirmed) {
+            toast.success('Prove generated!');
+        }
+    }, [isConfirmed]);
+
+    const buttonText = isLoading ? 'Generating...' :
+        isPending ? 'Confirming...' :
+            isConfirming ? 'Confirming...' :
+                'Generate Proof';
+
+    if (!isConnected) {
+        return <Button disabled>Connect Wallet to Generate Proof</Button>;
+    }
+
     return (
-        <Button onClick={handleGenerateProof} disabled={isLoading}>
-            {isLoading ? 'Generating...' : 'Generate Proof'}
+        <Button
+            onClick={handleGenerateProof}
+            disabled={isLoading || isPending || isConfirming}
+        >
+            {buttonText}
         </Button>
     );
-};
+}
