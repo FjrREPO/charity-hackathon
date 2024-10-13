@@ -2,7 +2,8 @@
 import DialogProof from '../tables/proof/DialogProof';
 import { Button } from '../ui/button';
 
-export const ProofButton = ({ productId, proveStatus }: { productId: number, proveStatus: boolean }) => {
+
+export const ProofButton = ({ productId, proveStatus, transactionId, handleRefresh }: { productId: number, proveStatus: boolean, transactionId: number, handleRefresh: () => void }) => {
     return (
         <div className='max-w-[150px] flex justify-center'>
             {proveStatus ? (
@@ -21,6 +22,8 @@ export const ProofButton = ({ productId, proveStatus }: { productId: number, pro
                         </Button>
                     }
                     productId={productId}
+                    transactionId={transactionId}
+                    handleRefresh={handleRefresh}
                 />
             )}
         </div>

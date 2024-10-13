@@ -67,7 +67,7 @@ export default function TableProof() {
 
     useEffect(() => {
         if (contractData) {
-            const transactionContracts = contractData.map((item) => {
+            const transactionContracts = contractData.map((item,i) => {
                 if (item.status === "success" && item.result) {
                     const [account, productId, timestamp, marketplaceId, proved, link] = item.result as [string, number, number, number, boolean, string];
                     return {
@@ -76,7 +76,8 @@ export default function TableProof() {
                         timestamp: Number(timestamp),
                         marketplaceId: Number(marketplaceId),
                         proved,
-                        link
+                        link,
+                        transactionId: Number(i + 1),
                     };
                 } else {
                     return null;
@@ -107,7 +108,7 @@ export default function TableProof() {
             <div className="w-full space-y-4 pt-[120px] p-5">
                 <DataTable
                     data={dataTransaction}
-                    columns={columns}
+                    columns={columns(handleRefresh)}
                     handleRefresh={handleRefresh}
                     isLoading={isRefetching || loadingContracts}
                 />
