@@ -99,7 +99,7 @@ export const ConfirmationForm: React.FC<ConfirmationFormProps> = ({
                 await new Promise(resolve => setTimeout(resolve, 2000)); 
             }
 
-            await writeContract({
+            writeContract({
                 abi: donationABI,
                 address: MAIN_ADDRESS,
                 functionName: 'donate',

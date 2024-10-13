@@ -4,13 +4,13 @@ import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "./ColumnHeader";
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
-import { formatAddress } from "@/lib/utils";
+import { convertTimestampToDate, formatAddress } from "@/lib/utils";
 import { ProofButton } from "@/components/proof/proof-button";
 import items from "@/data/items/items.json";
 import React from "react";
 import CellInvoice from "@/components/tables/proof/CellInvoice";
 
-export type TransactionHistoryRow = TransactionTransferHistory;
+export type TransactionHistoryRow = TransactionContract;
 
 const copyToClipboard = (text: string) => {
   navigator.clipboard.writeText(text).then(() => {
@@ -22,47 +22,44 @@ const copyToClipboard = (text: string) => {
 
 export const columns: ColumnDef<TransactionHistoryRow>[] = [
   {
-    accessorKey: "id",
+    accessorKey: "productId",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title="Item ID"
+        title="Product ID"
       />
     ),
     cell: ({ row }) => {
-      const transactionValue = row.original.value * 10;
-      const matchingItem = items.find((item: Item) => item.price === transactionValue);
-
       return (
         <div className="text-sm">
-          {matchingItem ? matchingItem.id : '-'}
+          {row.original.productId}
         </div>
       );
     },
   },
   {
-    accessorKey: "blockNum",
+    accessorKey: "timeStamp",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title="Block Number"
+        title="Timestamp"
       />
     ),
-    cell: ({ row }) => <div>{row.original.blockNum}</div>,
+    cell: ({ row }) => <div>{convertTimestampToDate(row.original.timestamp)}</div>,
   },
   {
-    accessorKey: "hash",
+    accessorKey: "account",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title="Transaction Hash"
+        title="Sender"
       />
     ),
     cell: ({ row }) => (
       <div className="flex items-center truncate w-fit justify-between">
-        <span className="mr-2">{formatAddress(row.original.hash)}</span>
+        <span className="mr-2">{formatAddress(row.original.account as HexAddress)}</span>
         <button
-          onClick={() => copyToClipboard(row.original.hash)}
+          onClick={() => copyToClipboard(row.original.account as HexAddress)}
           aria-label="Copy to clipboard"
           className="text-gray-500 hover:text-gray-700 focus:outline-none"
         >
@@ -72,17 +69,17 @@ export const columns: ColumnDef<TransactionHistoryRow>[] = [
     ),
   },
   {
-    accessorKey: "from",
+    accessorKey: "marketplaceId",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title="Sender"
+        title="Marketplace ID"
       />
     ),
-    cell: ({ row }) => <div>{formatAddress(row.original.from)}</div>,
+    cell: ({ row }) => <div>{row.original.marketplaceId}</div>,
   },
   {
-    accessorKey: "to",
+    accessorKey: "proved",
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
