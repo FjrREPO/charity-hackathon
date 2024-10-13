@@ -29,8 +29,17 @@ export function convertNumberToBigInt(num: number): bigint {
   return BigInt(num * 1_000_000);
 }
 
-export function formatRegex(invoice: string) {
-  const escapedInvoice = invoice.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  
-  return new RegExp(`^${escapedInvoice}$`);
+export function convertTimestampToDate(timestamp: number): string {
+  const date = new Date(timestamp * 1000);
+  const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+  };
+
+  return date.toLocaleString('en-US', options);
 }

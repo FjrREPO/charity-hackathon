@@ -74,3 +74,12 @@ interface TransactionTransferHistory {
     category: string;
     rawContract: RawContract;
 }
+
+interface TransactionContract {
+    account: string;
+    productId: number;
+    timestamp: number;
+    marketplaceId: number;
+    proved: boolean;
+    link: string;
+}

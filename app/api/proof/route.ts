@@ -71,10 +71,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const isProofVerified = await verifyProof(proof);
-    const proofData = transformForOnchain(proof);
+        const isProofVerified = await verifyProof(proof);
+        if (!isProofVerified) {
+            return NextResponse.json({ error: 'Failed to verify proof' }, { status: 500 });
+        }
 
-    console.log("Proof data:", proof);
+        const proofData = transformForOnchain(proof);
 
     return NextResponse.json({
       proofData,
