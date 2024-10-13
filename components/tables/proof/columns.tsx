@@ -7,6 +7,8 @@ import { toast } from "sonner";
 import { formatAddress } from "@/lib/utils";
 import { ProofButton } from "@/components/proof/proof-button";
 import items from "@/data/items/items.json";
+import React from "react";
+import CellInvoice from "@/components/tables/proof/CellInvoice";
 
 export type TransactionHistoryRow = TransactionTransferHistory;
 
@@ -104,6 +106,22 @@ export const columns: ColumnDef<TransactionHistoryRow>[] = [
     ),
   },
   {
+    // input invoice
+    accessorKey: "invoice",
+    header: ({ column }) => (
+      <DataTableColumnHeader
+        column={column}
+        title="Invoice"
+      />
+    ),
+    cell: ({ row }) => {
+      return (
+        <CellInvoice
+          index={row.index}
+        />
+      );
+    },
+  }, {
     id: "generateProof",
     header: ({ column }) => (
       <DataTableColumnHeader
@@ -112,12 +130,13 @@ export const columns: ColumnDef<TransactionHistoryRow>[] = [
       />
     ),
     cell: ({ row }) => {
-      const transactionValue = row.original.value * 10;
-      const matchingItem = items.find((item: Item) => item.price === transactionValue);
+      // console.log(row);
+      // const transactionValue = row.original.value * 10;
+      // const matchingItem = items.find((item: Item) => item.price === transactionValue);
 
       return (
         <div>
-          <ProofButton idItem={matchingItem?.id} />
+          <ProofButton index={row.index} />
         </div>
       )
     },

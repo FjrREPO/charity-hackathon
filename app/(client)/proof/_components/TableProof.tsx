@@ -6,6 +6,13 @@ import { toast } from "sonner";
 import { useAccount } from "wagmi";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+
+export type TableRHF = {
+    invoices: {
+        value: string
+    }[]
+}
 
 export default function TableProof() {
     const { address } = useAccount();
@@ -30,18 +37,32 @@ export default function TableProof() {
         refetch();
     };
 
+    const defaultValues: TableRHF = {
+        invoices: transactionsHistory?.map(() => ({
+            value: ""
+        })) ?? []
+    }
+
+    const methods = useForm<TableRHF>(
+        {
+            defaultValues
+        }
+    )
+
     if (!hasMounted) {
         return null;
     }
 
     return (
-        <div className="w-full space-y-4 pt-[100px] p-5">
-            <DataTable
-                data={transactionsHistory || []}
-                columns={columns}
-                handleRefresh={handleRefresh}
-                isLoading={isLoading || isRefetching}
-            />
-        </div>
+        <FormProvider {...methods} >
+            <div className="w-full space-y-4 pt-[100px] p-5">
+                <DataTable
+                    data={transactionsHistory || []}
+                    columns={columns}
+                    handleRefresh={handleRefresh}
+                    isLoading={isLoading || isRefetching}
+                />
+            </div>
+        </FormProvider>
     );
 }
