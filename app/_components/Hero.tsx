@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { motion } from "framer-motion";
+import { FlipWords } from "@/components/ui/flip-word";
 
 export default function Hero() {
     const containerVariants = {
@@ -39,6 +40,12 @@ export default function Hero() {
         }
     };
 
+    const words = [
+        "Prevent any donation fraud without trusting anyone.",
+        "Incentivize honest behavior.",
+        "Bridge crypto to real-world donations without compromising privacy."
+    ];
+
     return (
         <WavyBackground className="max-w-full h-svh flex flex-col justify-center items-center mx-auto">
             <motion.div
@@ -48,17 +55,17 @@ export default function Hero() {
                 className="flex flex-col items-center max-w-[80vw]"
             >
                 <motion.div variants={itemVariants}>
-                    <Label className="flex md:pb-2 text-4xl md:text-6xl lg:text-7xl font-bold inter-var text-center">
-                        <Label className="text-textSecondary text-4xl md:text-6xl lg:text-7xl font-bold inter-var">Musang</Label>&nbsp;Charity
+                    <Label className="md:pb-2 text-4xl md:text-6xl lg:text-7xl font-bold inter-var text-center flex">
+                        Trustless Verifiable Donation Platform Using ZkTLS
                     </Label>
                 </motion.div>
-                
+
                 <motion.div variants={itemVariants}>
-                    <Label className="flex justify-center text-center md:text-lg mt-4 font-normal inter-var">
-                        Musang Charity is a non-profit organization that aims to help people in need.
+                    <Label className="flex justify-center text-center md:text-xl mt-4 font-normal inter-var">
+                        <FlipWords words={words} />
                     </Label>
                 </motion.div>
-                
+
                 <motion.div variants={itemVariants}>
                     <Link href="/donation">
                         <motion.div
