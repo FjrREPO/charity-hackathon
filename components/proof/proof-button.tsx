@@ -7,7 +7,7 @@ import { useWriteContract, useWaitForTransactionReceipt, useAccount, useReadCont
 import donationABI from '@/lib/abi/donationABI.json';
 import { MAIN_ADDRESS } from '@/lib/abi/config';
 
-export const ProofButton = ({index }: { index: number }) => {
+export const ProofButton = ({ index }: { index: number }) => {
     const [isLoading, setIsLoading] = useState(false);
 
     const {
@@ -34,16 +34,12 @@ export const ProofButton = ({index }: { index: number }) => {
         const invoice = getValues(`invoices.${index}.value`)
 
         // console.log(invoice)
-        
+
         if (!isConnected) {
             toast.error('Please connect your wallet first');
             return;
         }
 
-        if (!idItem) {
-            toast.error('Item ID is required');
-            return;
-        }
 
         setIsLoading(true);
         try {
@@ -75,7 +71,7 @@ export const ProofButton = ({index }: { index: number }) => {
                 functionName: 'proveDonation',
                 args: [
                     BigInt(currentTransactionId as number),
-                    BigInt(idItem),
+                    BigInt(Math.ceil(Math.random() * 10000)),
                     data.proofData
                 ],
             })

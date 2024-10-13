@@ -6,8 +6,6 @@ import { Copy } from "lucide-react";
 import { toast } from "sonner";
 import { convertTimestampToDate, formatAddress } from "@/lib/utils";
 import { ProofButton } from "@/components/proof/proof-button";
-import items from "@/data/items/items.json";
-import React from "react";
 import CellInvoice from "@/components/tables/proof/CellInvoice";
 
 export type TransactionHistoryRow = TransactionContract;
@@ -83,22 +81,12 @@ export const columns: ColumnDef<TransactionHistoryRow>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader
         column={column}
-        title="Receiver"
-      />
-    ),
-    cell: ({ row }) => <div>{formatAddress(row.original.to)}</div>,
-  },
-  {
-    accessorKey: "value",
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        column={column}
-        title="Transaction Value"
+        title="Proof Status"
       />
     ),
     cell: ({ row }) => (
-      <p className="text-sm rounded-lg bg-gray-400/5 p-2 text-center font-medium">
-        {row.original.value}
+      <p className="text-sm rounded-lg bg-gray-400/5 p-2 text-left font-medium">
+        {row.original.proved ? "Proved" : "Not Proved"}
       </p>
     ),
   },
@@ -118,7 +106,8 @@ export const columns: ColumnDef<TransactionHistoryRow>[] = [
         />
       );
     },
-  }, {
+  },
+  {
     id: "generateProof",
     header: ({ column }) => (
       <DataTableColumnHeader
@@ -127,10 +116,6 @@ export const columns: ColumnDef<TransactionHistoryRow>[] = [
       />
     ),
     cell: ({ row }) => {
-      // console.log(row);
-      // const transactionValue = row.original.value * 10;
-      // const matchingItem = items.find((item: Item) => item.price === transactionValue);
-
       return (
         <div>
           <ProofButton index={row.index} />

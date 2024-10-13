@@ -88,7 +88,7 @@ export default function TableProof() {
     }, [contractData]);
 
     const defaultValues: TableRHF = {
-        invoices: transactionsHistory?.map(() => ({
+        invoices: dataTransaction?.map(() => ({
             value: ""
         })) ?? []
     }

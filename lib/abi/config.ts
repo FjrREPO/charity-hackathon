@@ -12,6 +12,6 @@ export const USDC_ABI = [
 
 export const USDC_ADDRESS = '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913';
 
-export const MAIN_ADDRESS = "0x39bb913bf31a568c2619550c93cda7b4611b3da4"
+export const MAIN_ADDRESS = "0xaabe76d29cbc05a95557a0db880d83d9bbeeed03"
 
 export const RECIPIENT_ADDRESS = "0x3b4f0135465d444a5bd06ab90fc59b73916c85f5";
