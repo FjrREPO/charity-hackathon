@@ -56,7 +56,7 @@ export default function Hero() {
             >
                 <motion.div variants={itemVariants}>
                     <Label className="md:pb-2 text-4xl md:text-6xl lg:text-7xl font-bold inter-var text-center flex">
-                        Trustless Verifiable Donation Platform Using ZkTLS
+                        Decentralized Verifiable Donation Platform Using ZkTLS
                     </Label>
                 </motion.div>
 
