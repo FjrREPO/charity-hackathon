@@ -40,7 +40,7 @@ export const ItemDetails: React.FC<ItemDetailsProps> = React.memo(({ item, balan
             {loading ? (
                 <DetailRow label="Your Balance" value="Loading..." />
             ) : (
-                <DetailRow label="Your Balance" value={balance !== undefined ? `${formatPrice(balance)} USDC` : '0'} />
+                <DetailRow label="Your Balance" value={balance !== undefined ? `${formatPrice(balance)} USDC` : '0 USDC'} />
             )}
         </div>
         <Separator />
