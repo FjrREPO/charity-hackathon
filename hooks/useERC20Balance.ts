@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { readContract } from "@wagmi/core";
 import { config } from "@/lib/wagmi/config";
-import { abiBalance } from "@/lib/abi/abiBalance";
+import { erc20Abi } from "viem";
 
 export const useERC20Balance = (address: HexAddress, token: HexAddress) => {
     const [balance, setBalance] = useState<bigint | undefined>(undefined);
@@ -14,7 +14,7 @@ export const useERC20Balance = (address: HexAddress, token: HexAddress) => {
             try {
                 const result = await readContract(config, {
                     address: token,
-                    abi: abiBalance,
+                    abi: erc20Abi,
                     functionName: 'balanceOf',
                     args: [address],
                 });

@@ -1,5 +1,5 @@
 
-import DialogProof from '../tables/proof/DialogProof';
+import DialogProof from './dialog-proof'
 import { Button } from '../ui/button';
 
 

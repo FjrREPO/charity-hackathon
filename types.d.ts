@@ -84,3 +84,8 @@ interface TransactionContract {
     link: string;
     transactionId: number;
 }
+
+interface Signature {
+    signature: string;
+    signer: string;
+}

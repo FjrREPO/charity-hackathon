@@ -5,13 +5,13 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { useWriteContract, useWaitForTransactionReceipt, useAccount, useReadContract } from 'wagmi';
 import donationABI from '@/lib/abi/donationABI.json';
-import { MAIN_ADDRESS } from '@/lib/abi/config';
 import { Input } from '@/components/ui/input';
 import Image from 'next/image';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { MAIN_ADDRESS } from '@/lib/abi/config';
 
-export default function DialogProof({ trigger, productId, transactionId ,handleRefresh}: { trigger: React.ReactNode, productId: number, transactionId: number, handleRefresh: () => void }) {
+export default function DialogProof({ trigger, productId, transactionId, handleRefresh }: { trigger: React.ReactNode, productId: number, transactionId: number, handleRefresh: () => void }) {
     const item = items.find((item: Item) => item.id === productId);
 
     const [isLoading, setIsLoading] = useState(false);
@@ -19,12 +19,6 @@ export default function DialogProof({ trigger, productId, transactionId ,handleR
     const [isOpen, setIsOpen] = useState(false);
 
     const { isConnected } = useAccount();
-
-    const { data: currentTransactionId } = useReadContract({
-        address: MAIN_ADDRESS as HexAddress,
-        abi: donationABI,
-        functionName: "currentTransactionId",
-    });
 
     const {
         writeContract,
@@ -43,13 +37,18 @@ export default function DialogProof({ trigger, productId, transactionId ,handleR
         useWaitForTransactionReceipt({ hash })
 
     const handleGenerateProof = async () => {
-        if(hasClaimed == true) {
+        if (hasClaimed == true) {
             toast.error('Invoice already claimed!');
-            return
+            return;
         }
 
         if (!isConnected) {
             toast.error('Please connect your wallet first');
+            return;
+        }
+
+        if (!invoice) {
+            toast.error('Please enter an invoice number');
             return;
         }
 
@@ -73,20 +72,20 @@ export default function DialogProof({ trigger, productId, transactionId ,handleR
                 throw new Error('Write contract function is not available');
             }
 
-            if (!currentTransactionId) {
-                throw new Error('Current transaction ID is not available');
+            if (!data.proofData || !data.marketplaceId) {
+                throw new Error('Invalid proof data received');
             }
 
             writeContract({
                 abi: donationABI,
-                address: MAIN_ADDRESS,
+                address: MAIN_ADDRESS as HexAddress,
                 functionName: 'proveDonation',
                 args: [
                     BigInt(transactionId),
-                    BigInt(invoice),
+                    BigInt(data.marketplaceId),
                     data.proofData
                 ],
-            })
+            });
         } catch (error) {
             console.error('Error generating proof:', error);
             toast.error(error instanceof Error ? error.message : 'Failed to generate proof');

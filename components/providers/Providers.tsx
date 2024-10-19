@@ -6,7 +6,7 @@ import { ThemeProvider } from "./ThemeProvider";
 import { WagmiProvider } from 'wagmi'
 import { config } from '@/lib/wagmi/config'
 import { RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { baseSepolia } from "viem/chains";
+import { base } from "viem/chains";
 
 interface Props {
     children: ReactNode;
@@ -27,7 +27,7 @@ const Providers = ({ children }: Props) => {
     return (
         <WagmiProvider config={config}>
             <QueryClientProvider client={client}>
-                <RainbowKitProvider modalSize="wide" initialChain={baseSepolia} showRecentTransactions={true} coolMode>
+                <RainbowKitProvider modalSize="wide" initialChain={base} showRecentTransactions={true} coolMode>
                     <ThemeProvider
                         attribute="class"
                         defaultTheme="dark"

@@ -87,7 +87,6 @@ export function columns(handleRefresh: () => void): ColumnDef<TransactionHistory
       cell: ({ row }) => {
         return (
           <ProofButton productId={row.original.productId} proveStatus={row.original.proved} transactionId={row.original.transactionId} handleRefresh={handleRefresh} />
-        
         )
       },
     },

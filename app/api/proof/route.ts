@@ -5,7 +5,6 @@ import { transformForOnchain, verifyProof } from "@reclaimprotocol/js-sdk";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    // invoice from id item
     const { invoice } = body;
 
     if (!invoice) {
@@ -14,18 +13,10 @@ export async function POST(req: NextRequest) {
 
     const reclaimId = process.env.RECLAIM_ID;
     const reclaimSecret = process.env.RECLAIM_SECRET;
-    const verifyUrl = process.env.API_PROOF_URL;
 
     if (!reclaimId || !reclaimSecret) {
       return NextResponse.json(
         { error: "Missing reclaim credentials" },
-        { status: 400 }
-      );
-    }
-
-    if (!verifyUrl) {
-      return NextResponse.json(
-        { error: "Missing verify URL" },
         { status: 400 }
       );
     }
@@ -36,10 +27,10 @@ export async function POST(req: NextRequest) {
       method: "POST",
       headers: {
         accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
+        "content-type": "application/json",
       },
       body: JSON.stringify({
-        invoiceId: invoice,
+        invoiceId: invoice.toString(),
       }),
     };
 
@@ -49,12 +40,12 @@ export async function POST(req: NextRequest) {
         responseMatches: [
           {
             type: "regex",
-            value: '.*"invoiceId":\\s(?<id>\\d+).*',
+            value: '.*"invoiceId":\\s*"?(?<id>\\d+)"?.*',
           },
         ],
       })
       .catch((error) => {
-        console.error("Error in /api/proof:", error);
+        console.error("Error generating proof:", error);
         return null;
       });
 
@@ -77,12 +68,12 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       proofData,
-      isProofVerified,
+      marketplaceId: proof.extractedParameterValues?.id
     });
   } catch (error) {
     console.error("Error in /api/proof:", error);
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      { error: error instanceof Error ? error.message : "Internal Server Error" },
       { status: 500 }
     );
   }
