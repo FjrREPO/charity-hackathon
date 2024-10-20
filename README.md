@@ -1,36 +1,170 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Verifiable Donation Platform
 
-## Getting Started
+A decentralized donation platform built with Next.js that enables transparent and verifiable donations using ZK-TLS proofs. Users can make donations in USDC and generate cryptographic proofs of their transactions.
 
-First, run the development server:
+## 🌟 Features
+
+### Home Page
+- Overview of the platform and its mission
+- Real-time donation statistics and impact metrics
+- Easy wallet connection using Web3 providers
+- Detailed explanation of the verification process
+
+### Donation System
+- Browse available donation items
+- USDC payment integration
+- Real-time price conversion
+- Transaction history
+- Smart contract interaction for secure donations
+
+### Proof Generation
+- ZK-TLS proof generation for each transaction
+- Interactive proof verification system
+- Transaction proof history
+- Proof status monitoring
+
+## 🔧 Tech Stack
+
+- **Frontend**: Next.js 14 with App Router
+- **Blockchain**: Base Network
+- **Smart Contracts**: Solidity
+- **Styling**: Tailwind CSS
+- **Web3 Integration**: wagmi, viem
+- **Authentication**: Web3 wallet connection
+- **Proof System**: ZK-TLS Protocol
+- **State Management**: TanStack Query
+
+## 🚀 Getting Started
+
+### Prerequisites
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+node >= 18.0.0
+npm >= 9.0.0
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clone the repository
+```bash
+git clone https://github.com/FjrREPO/charity-hackathon.git
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. Install dependencies
+```bash
+cd charity-hackathon
+npm install
+```
 
-## Learn More
+3. Set up environment variables
+```bash
+cp .env.example .env.local
+```
 
-To learn more about Next.js, take a look at the following resources:
+Fill in the required environment variables:
+```env
+RECLAIM_ID=your_project_id
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4. Run the development server
+```bash
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Visit `http://localhost:3000` to see the application.
 
-## Deploy on Vercel
+## 💻 Usage
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Connecting Wallet
+1. Click "Connect Wallet" button on the navigation bar
+2. Select your preferred Web3 wallet
+3. Accept the connection request
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Making a Donation
+1. Navigate to the Donation page
+2. Select the item you want to donate to
+3. Enter the donation amount in USDC
+4. Approve USDC spending
+5. Confirm the transaction in your wallet
+
+### Generating Proof
+1. Go to the Proof page
+2. Select the transaction you want to verify
+3. Click "Generate Proof"
+4. Follow the proof generation steps
+5. View and verify your proof
+
+## 🔐 Smart Contract Integration
+
+The platform integrates with the following smart contracts:
+
+1. DonationProof Contract
+```solidity
+address: [contract_address]
+network: Base
+```
+
+2. USDC Contract
+```solidity
+address: [contract_address]
+network: Base
+```
+
+## 🛠 Development
+
+### Running Tests
+```bash
+npm run test
+```
+
+### Building for Production
+```bash
+npm run build
+```
+
+### Linting
+```bash
+npm run lint
+```
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a new branch
+```bash
+git checkout -b feature/amazing-feature
+```
+3. Make your changes
+4. Commit your changes
+```bash
+git commit -m 'Add amazing feature'
+```
+5. Push to the branch
+```bash
+git push origin feature/amazing-feature
+```
+6. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🔗 Important Links
+
+- [Smart Contract Documentation](https://book.getfoundry.sh/)
+- [Reclaim Documentation](https://dev.reclaimprotocol.org/)
+
+## 🌟 Acknowledgments
+
+- ZK-TLS Protocol
+- Reclaim Protocol
+- OpenZeppelin Contracts
+- Base Network
+
+## ⚠️ Security
+
+If you discover any security issues, please email security@yourplatform.com instead of using the issue tracker.
+
+## 💡 Support
+
+For support, please join our [Discord community](your-discord-link) or open an issue in the repository.
