@@ -14,10 +14,7 @@ A decentralized donation platform built with Next.js that enables transparent an
 
 # Demo
 
-<video width="100%" controls>
-  <source src="https://res.cloudinary.com/dutlw7bko/video/upload/v1729405439/charity-hackathon/1020_gt50mb.mp4" type="video/mp4" autoplay>
-  Your browser does not support the video tag.
-</video>
+[![Demo Video](https://res.cloudinary.com/dutlw7bko/image/upload/v1729407022/charity-hackathon/WhatsApp_Image_2024-10-19_at_23.59.02_ijrnnr.jpg)](https://res.cloudinary.com/dutlw7bko/video/upload/v1729405439/charity-hackathon/1020_gt50mb.mp4)
 
 ## 🌟 Features
 
@@ -191,7 +188,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🔗 Important Links
 
 - [Smart Contract Documentation](https://book.getfoundry.sh/)
-- [Reclaim Documentation](https://dev.reclaimprotocol.org/)
+- [Reclaim Documentation](https://docs.reclaimprotocol.org/)
 
 ## 🌟 Acknowledgments
 
